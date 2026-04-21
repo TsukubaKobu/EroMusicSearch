@@ -1,6 +1,6 @@
 # EroMusicSearch
 
-A minimalist desktop application for bidirectional querying of Anime, Galgame, and Video Game music metadata. Supports **macOS** and **Windows**.
+A minimalist desktop application for bidirectional querying of Anime, VN/Eroge, and Video Game music metadata. Supports **macOS** and **Windows**.
 
 ## Features
 
