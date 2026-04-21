@@ -1,4 +1,4 @@
-# EroMusicSearch
+# ERGMusicSearch
 
 A minimalist desktop application for bidirectional querying of Anime, VN/Eroge, and Video Game music metadata. Supports **macOS** and **Windows**.
 
