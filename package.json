@@ -1,7 +1,7 @@
 {
   "name": "eromusicsearch",
   "productName": "EroMusicSearch",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "Search ErogameScape for games and music",
   "main": "main.js",
   "scripts": {
@@ -14,6 +14,14 @@
     "mac": {
       "category": "public.app-category.utilities",
       "target": ["default"]
+    },
+    "win": {
+      "target": ["nsis"],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
     }
   },
   "dependencies": {

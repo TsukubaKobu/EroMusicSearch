@@ -1,10 +1,7 @@
-let currentSource = 'erogamescape';
-let currentMode = 'gameToMusic';
-
-const sourceTabs = document.querySelectorAll('.source-tab');
-const directionTabs = document.querySelectorAll('.direction-tab');
+const modeSelect = document.getElementById('modeSelect');
 const searchInput = document.getElementById('searchInput');
 const searchBtn = document.getElementById('searchBtn');
+const mirrorCheck = document.getElementById('mirrorCheck');
 const loader = document.getElementById('loader');
 const errorBox = document.getElementById('errorBox');
 const resultsTable = document.getElementById('resultsTable');
@@ -12,49 +9,30 @@ const noResults = document.getElementById('noResults');
 const tableHeaderRow = document.getElementById('tableHeaderRow');
 const tableBody = document.getElementById('tableBody');
 
-// Handle source tab switching
-sourceTabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    sourceTabs.forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    currentSource = tab.dataset.source;
-    hideResults();
-    searchInput.focus();
-  });
+// Always read from the actual DOM element to avoid stale state on reload
+function getCurrentMode() {
+  const [s, m] = modeSelect.value.split('|');
+  return { source: s, mode: m };
+}
+
+modeSelect.addEventListener('change', () => {
+  hideResults();
+  searchInput.focus();
 });
 
-// Handle direction tab switching
-directionTabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    directionTabs.forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    currentMode = tab.dataset.mode;
-
-    if (currentMode === 'gameToMusic') {
-      searchInput.placeholder = "Enter work name...";
-    } else {
-      searchInput.placeholder = "Enter music name...";
-    }
-    
-    hideResults();
-    searchInput.focus();
-  });
-});
-
-// Handle search action
 const performSearch = async () => {
   const term = searchInput.value.trim();
   if (!term) return;
 
-  // UI state updates
   hideResults();
   errorBox.classList.add('hidden');
   loader.classList.remove('hidden');
   searchBtn.disabled = true;
 
   try {
-    const results = await window.api.searchDatabase({ source: currentSource, mode: currentMode, term });
-    
+    const { source, mode } = getCurrentMode();
+    const mirrorMode = mirrorCheck.checked;
+    const results = await window.api.searchDatabase({ source, mode, term, mirrorMode });
     if (results && results.length > 0) {
       renderTable(results);
     } else {
@@ -82,40 +60,32 @@ function hideResults() {
 }
 
 function renderTable(data) {
-  if (data.length === 0) return;
-
+  if (!data.length) return;
   const headers = Object.keys(data[0]);
 
-  // Create Headers
   tableHeaderRow.innerHTML = '';
-  headers.forEach(header => {
+  headers.forEach(h => {
     const th = document.createElement('th');
-    if (header === 'workName') th.textContent = 'Work Name';
-    else if (header === 'category') th.textContent = 'Category';
-    else if (header === 'musicName') th.textContent = 'Music Name';
-    else th.textContent = header;
+    if (h === 'workName') th.textContent = '作品';
+    else if (h === 'category') th.textContent = '分類';
+    else if (h === 'musicName') th.textContent = '楽曲';
+    else th.textContent = h;
     tableHeaderRow.appendChild(th);
   });
 
-  // Create Rows
   tableBody.innerHTML = '';
   data.forEach(row => {
     const tr = document.createElement('tr');
-    headers.forEach(header => {
+    headers.forEach(h => {
       const td = document.createElement('td');
-      td.textContent = row[header];
-      td.title = "Click to copy";
-      
-      // Click to copy functionality
+      td.textContent = row[h];
+      td.title = 'Click to copy';
       td.addEventListener('click', () => {
         navigator.clipboard.writeText(td.textContent).then(() => {
           td.classList.add('copied');
-          setTimeout(() => {
-            td.classList.remove('copied');
-          }, 500);
+          setTimeout(() => td.classList.remove('copied'), 500);
         });
       });
-
       tr.appendChild(td);
     });
     tableBody.appendChild(tr);

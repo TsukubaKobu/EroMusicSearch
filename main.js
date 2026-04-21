@@ -21,6 +21,11 @@ function createWindow() {
 app.whenReady().then(() => {
   createWindow();
 
+  // Pre-warm EGS endpoints to establish session before first user search
+  const warmUp = (url) => fetch(url, { method: 'GET' }).catch(() => {});
+  warmUp('https://erogamescape.dyndns.org/~ap2/ero/toukei_kaiseki/sql_for_erogamer_form.php');
+  warmUp('https://koko.kyara.top/sql_for_erogamer_form.php');
+
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
@@ -47,7 +52,7 @@ function toHiragana(str) {
 }
 
 // IPC Handler for querying databases
-ipcMain.handle('search-database', async (event, { source, mode, term }) => {
+ipcMain.handle('search-database', async (event, { source, mode, term, mirrorMode }) => {
   try {
     if (source === 'bangumi') {
       const isAnimeMode = mode === 'gameToMusic';
@@ -145,52 +150,47 @@ ORDER BY m.name, gm.category;
         `.trim();
       }
 
-      try {
-        const response = await fetch('https://erogamescape.dyndns.org/~ap2/ero/toukei_kaiseki/sql_for_erogamer_form.php', {
-          method: 'POST',
-          body: new URLSearchParams({ sql: sql })
-        });
-        
+      const egsUrl = mirrorMode
+          ? 'https://koko.kyara.top/sql_for_erogamer_form.php'
+          : 'https://erogamescape.dyndns.org/~ap2/ero/toukei_kaiseki/sql_for_erogamer_form.php';
+
+      const runEgsQuery = async () => {
+        const response = await fetch(egsUrl, { method: 'POST', body: new URLSearchParams({ sql }) });
         const rawData = await response.text();
         const $ = cheerio.load(rawData);
-        const results = [];
-        
+        const rows = [];
         const headers = [];
-        $('table#result th').each((i, el) => {
-          headers.push($(el).text().trim());
-        });
+        $('table#result th').each((i, el) => headers.push($(el).text().trim()));
 
         if (headers.length === 0) {
           const anyTable = $('table').first();
           if (anyTable.length > 0) {
-            anyTable.find('th').each((i, el) => {
-              headers.push($(el).text().trim());
-            });
-            
+            anyTable.find('th').each((i, el) => headers.push($(el).text().trim()));
             anyTable.find('tr').each((i, el) => {
-              if (i === 0 && $(el).find('th').length > 0) return; 
+              if (i === 0 && $(el).find('th').length > 0) return;
               const row = {};
-              $(el).find('td').each((j, td) => {
-                const header = headers[j] || `col${j}`;
-                row[header] = $(td).text().trim();
-              });
-              if (Object.keys(row).length > 0) results.push(row);
+              $(el).find('td').each((j, td) => { row[headers[j] || `col${j}`] = $(td).text().trim(); });
+              if (Object.keys(row).length > 0) rows.push(row);
             });
-          } else {
-             return [];
           }
         } else {
           $('table#result tr').each((i, el) => {
             if ($(el).find('th').length > 0) return;
             const row = {};
-            $(el).find('td').each((j, td) => {
-              const header = headers[j] || `col${j}`;
-              row[header] = $(td).text().trim();
-            });
-            if (Object.keys(row).length > 0) results.push(row);
+            $(el).find('td').each((j, td) => { row[headers[j] || `col${j}`] = $(td).text().trim(); });
+            if (Object.keys(row).length > 0) rows.push(row);
           });
         }
+        return rows;
+      };
 
+      try {
+        let results = await runEgsQuery();
+        // Auto-retry once on empty (EGS session may not be ready on first launch)
+        if (results.length === 0) {
+          await new Promise(r => setTimeout(r, 800));
+          results = await runEgsQuery();
+        }
         return results;
       } catch (e) {
         console.error(e);

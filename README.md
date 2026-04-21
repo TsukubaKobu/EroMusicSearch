@@ -1,18 +1,19 @@
 # EroMusicSearch
 
-A minimalist, native macOS desktop application for bidirectional querying of Anime, Galgame, and Video Game music metadata.
+A minimalist desktop application for bidirectional querying of Anime, Galgame, and Video Game music metadata. Supports **macOS** and **Windows**.
 
 ## Features
 
 - **Dual-Engine Search**:
-  - **ErogameScape (批评空间)**: Specifically designed to search for Galgame/Eroge music.
-  - **Bangumi (番组计划)**: Uses the massive Bangumi REST API to fetch Japanese Anime and general Video Game soundtracks.
+  - **ErogameScape (批評空間)**: Specifically designed to search for Galgame/Eroge music.
+  - **Bangumi (番組計画)**: Uses the Bangumi REST API to fetch Japanese Anime and general Video Game soundtracks.
 - **Bidirectional Querying**:
   - **Work ➔ Music**: Enter the name of an Anime or Game to retrieve all associated Opening, Ending, and Insert songs.
   - **Music ➔ Work**: Enter the name of a song to find which Anime or Game it belongs to.
-- **Native macOS Design**: Clean, dark-mode minimalist UI built with Electron.
-- **Click-to-Copy**: Instantly copy any cell's content to your clipboard with a single click.
-- **Full Japanese Support**: Accurately matches Japanese Kanji, Hiragana, and Katakana for precise searching.
+- **CN Mirror Support**: Toggle the "CN镜像" checkbox to route ErogameScape queries through `koko.kyara.top`, accessible from mainland China.
+- **Click-to-Copy**: Instantly copy any table cell's content to your clipboard with a single click.
+- **Full Japanese Support**: Accurately matches Kanji, Hiragana, and Katakana for precise searching.
+- **Cross-Platform**: Native dark mode UI on macOS; also works on Windows x64.
 
 ## Tech Stack
 

@@ -8,41 +8,29 @@
 </head>
 <body>
   <div class="titlebar"></div>
-  
+
   <div class="container">
-
-    <div class="search-container">
-      <div class="tabs source-tabs mb-2" style="margin-bottom: 10px;">
-        <button class="tab source-tab active" data-source="erogamescape">ErogameScape (Galgame)</button>
-        <button class="tab source-tab" data-source="bangumi">Bangumi (Anime/General)</button>
-      </div>
-
-      <div class="tabs direction-tabs" style="margin-bottom: 12px;">
-        <button class="tab direction-tab active" data-mode="gameToMusic">Work &rarr; Music</button>
-        <button class="tab direction-tab" data-mode="musicToGame">Music &rarr; Work</button>
-      </div>
-
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Enter game name..." autofocus>
-        <button id="searchBtn">Search</button>
-      </div>
+    <div class="search-bar">
+      <select id="modeSelect">
+        <option value="erogamescape|gameToMusic">EGS：作品→音楽</option>
+        <option value="erogamescape|musicToGame">EGS：音楽→作品</option>
+        <option value="bangumi|gameToMusic">Bangumi：作品→音楽</option>
+        <option value="bangumi|musicToGame">Bangumi：音楽→作品</option>
+      </select>
+      <input type="text" id="searchInput" placeholder="日本語で入力..." autofocus>
+      <button id="searchBtn">↵</button>
+      <label class="mirror-label" title="使用大陸可用的EGS鏡像站 koko.kyara.top">
+        <input type="checkbox" id="mirrorCheck"> CN鏡像
+      </label>
     </div>
 
-    <div id="loader" class="hidden">
-      <span>Querying...</span>
-    </div>
-
+    <div id="loader" class="hidden">Querying...</div>
     <div id="errorBox" class="hidden"></div>
+    <div id="noResults" class="hidden">No results found.</div>
 
-    <div class="results-container">
-      <div id="noResults" class="hidden">
-        <p>No results found.</p>
-      </div>
-
+    <div class="results-wrapper">
       <table id="resultsTable" class="hidden">
-        <thead>
-          <tr id="tableHeaderRow"></tr>
-        </thead>
+        <thead><tr id="tableHeaderRow"></tr></thead>
         <tbody id="tableBody"></tbody>
       </table>
     </div>
