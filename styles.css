@@ -1,0 +1,220 @@
+:root {
+  --bg-window: #1e1e1e;
+  --bg-control: #323232;
+  --bg-control-active: #5c5c5c;
+  --bg-input: #2d2d2d;
+  --border-color: #555555;
+  --text-primary: #ffffff;
+  --text-secondary: #aaaaaa;
+  --accent-color: #007aff;
+  --accent-text: #ffffff;
+  --table-border: #3a3a3a;
+  --table-header: #2a2a2a;
+  --table-hover: #333333;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-window);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Make titlebar draggable and blend with background */
+.titlebar {
+  height: 38px;
+  -webkit-app-region: drag;
+  background-color: var(--bg-window);
+  flex-shrink: 0;
+}
+
+.container {
+  padding: 0 30px 30px 30px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+header {
+  margin-bottom: 20px;
+  -webkit-app-region: drag; /* allows dragging from header area too */
+}
+
+h1 {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.search-container {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* Native looking segmented control for tabs */
+.tabs {
+  display: flex;
+  background: var(--bg-control);
+  border-radius: 6px;
+  padding: 2px;
+  width: fit-content;
+  border: 1px solid #111;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.2);
+}
+
+.tab {
+  padding: 4px 14px;
+  background: transparent;
+  border: none;
+  border-radius: 5px;
+  color: var(--text-primary);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.tab.active {
+  background: var(--bg-control-active);
+  font-weight: 500;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.search-box {
+  display: flex;
+  gap: 8px;
+}
+
+/* Native macOS style input */
+input {
+  flex: 1;
+  padding: 6px 10px;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 13px;
+  outline: none;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+
+input:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 1px var(--accent-color);
+}
+
+input::placeholder {
+  color: var(--text-secondary);
+}
+
+/* Native macOS style button */
+button#searchBtn {
+  padding: 0 16px;
+  background-color: var(--bg-control);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
+
+button#searchBtn:active {
+  background-color: var(--bg-control-active);
+}
+
+button#searchBtn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#loader, #noResults, #errorBox {
+  margin-top: 30px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+#errorBox {
+  color: #ff6b6b;
+}
+
+.results-container {
+  flex: 1;
+  overflow: auto;
+  border: 1px solid var(--table-border);
+  border-radius: 6px;
+  background-color: var(--bg-window);
+}
+
+/* Native looking table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+th {
+  background-color: var(--table-header);
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-align: left;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--table-border);
+  border-right: 1px solid var(--table-border);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+th:last-child {
+  border-right: none;
+}
+
+td {
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--table-border);
+  border-right: 1px solid var(--table-border);
+  color: var(--text-primary);
+  cursor: default;
+}
+
+td:last-child {
+  border-right: none;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+td:hover {
+  background-color: var(--table-hover);
+}
+
+td.copied {
+  background-color: #2b5536; /* Darker green for dark mode */
+  color: #a4f4b9;
+  transition: background-color 0.1s;
+}

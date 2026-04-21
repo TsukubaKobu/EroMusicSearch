@@ -1,0 +1,26 @@
+{
+  "name": "eromusicsearch",
+  "productName": "EroMusicSearch",
+  "version": "1.0.0",
+  "description": "Search ErogameScape for games and music",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.eromusicsearch.app",
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": ["default"]
+    }
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  },
+  "devDependencies": {
+    "electron": "^34.0.0",
+    "electron-builder": "^25.0.0"
+  }
+}
