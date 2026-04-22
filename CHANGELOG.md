@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2026-04-22
+
+### Added
+- **Anison.info integration**: Added `Anison.info` as a third data source, providing comprehensive anime song metadata from the Anison Generation database.
+  - **作品→音楽**: Search by anime/program title to get all OP/ED/IN/AR songs.
+  - **音楽→作品**: Search by song title to find which anime or game it was used in, along with usage type (OP/ED/IN) and media genre (TV/GM/VD).
+- The search results from Anison.info include artist name, genre tag, and usage classification for rich context.
+
+---
+
 ## [1.2.0] - 2026-04-22
 
 ### Fixed

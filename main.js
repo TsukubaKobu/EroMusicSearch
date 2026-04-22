@@ -54,7 +54,77 @@ function toHiragana(str) {
 // IPC Handler for querying databases
 ipcMain.handle('search-database', async (event, { source, mode, term, mirrorMode }) => {
   try {
-    if (source === 'bangumi') {
+    if (source === 'anison') {
+      const isAnimeMode = mode === 'gameToMusic';
+      const UA = { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36' };
+
+      if (isAnimeMode) {
+        // Anime → Songs: search programs → get detail page for each hit
+        const searchRes = await fetch(
+          `http://anison.info/data/n.php?m=pro&q=${encodeURIComponent(term)}`,
+          { headers: UA }
+        );
+        const searchHtml = await searchRes.text();
+        const $ = cheerio.load(searchHtml);
+
+        // Extract (programId, programName) from onclick links
+        const programs = [];
+        $('a[href*="link(\'program\'"]').each((i, el) => {
+          const href = $(el).attr('href') || '';
+          const m = href.match(/link\('program','(\d+)'\)/);
+          if (m) programs.push({ id: m[1], name: $(el).text().trim() });
+        });
+
+        const results = [];
+        for (const prog of programs.slice(0, 3)) {
+          const detailRes = await fetch(
+            `http://anison.info/data/program/${prog.id}.html`,
+            { headers: UA }
+          );
+          const detailHtml = await detailRes.text();
+          const $d = cheerio.load(detailHtml);
+
+          // OP/ED table rows: TD[0]=usage, TD[1]=song name, TD[2]=artist ...
+          $d('table tr').each((i, el) => {
+            const tds = $d(el).find('td');
+            if (tds.length < 2) return;
+            const category = $d(tds[0]).text().trim();
+            const musicName = $d(tds[1]).text().trim();
+            // Filter for real OP/ED/IN rows (usage starts with OP/ED/IN/AR/IM)
+            if (/^(OP|ED|IN|AR|IM)/.test(category) && musicName) {
+              results.push({ workName: prog.name, category, musicName });
+            }
+          });
+        }
+        return results;
+
+      } else {
+        // Song → Anime: search songs, parse result table
+        const searchRes = await fetch(
+          `http://anison.info/data/n.php?m=song&q=${encodeURIComponent(term)}`,
+          { headers: UA }
+        );
+        const searchHtml = await searchRes.text();
+        const $ = cheerio.load(searchHtml);
+
+        const results = [];
+        // Table columns: 曲名 | 歌手 | ジャンル | 使用作品 | 種別
+        $('table.list tbody tr').each((i, el) => {
+          const tds = $(el).find('td');
+          if (tds.length < 5) return;
+          const musicName = $(tds[0]).text().trim();
+          const artist    = $(tds[1]).text().trim().replace(/\s+/g, ' ');
+          const genre     = $(tds[2]).text().trim();  // TV / GM / VD ...
+          const workName  = $(tds[3]).text().trim();
+          const category  = $(tds[4]).text().trim();  // OP 1 / ED 2 / IN ...
+          if (musicName && workName) {
+            results.push({ musicName: `${musicName}（${artist}）`, category: `${category} [${genre}]`, workName });
+          }
+        });
+        return results;
+      }
+    }
+    else if (source === 'bangumi') {
       const isAnimeMode = mode === 'gameToMusic';
       const type = isAnimeMode ? '2' : '3'; // 2=Anime, 3=Music
 
