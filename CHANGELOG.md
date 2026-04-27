@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - **Fetch timeout protection**: All external API calls now use `AbortController` with a 15-second timeout, preventing the app from freezing when an external service is unresponsive.
 - **CN Mirror auto-hide**: The "CN镜像" checkbox now only appears when ErogameScape mode is selected, reducing confusion when using Bangumi or Anison.info.
 - **MAX_WORKS constant**: The hardcoded limit `3` in Bangumi and Anison results has been extracted to a named constant (`MAX_WORKS`) in `constants.js` for better maintainability.
+- **Intel Mac support**: Added macOS x64 (Intel) build alongside the existing Apple Silicon build.
 
 ### Changed
 - **Code modularization**: Refactored the monolithic `main.js` IPC handler (~250 lines) into separate modules under `src/` (`constants.js`, `erogamescape.js`, `bangumi.js`, `anison.js`), improving readability and maintainability.

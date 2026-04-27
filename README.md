@@ -69,7 +69,9 @@ EroMusicSearch is a desktop application for bidirectional lookup of ACG music me
 ## インストール / Installation
 
 ### macOS
-1. [Releases](https://github.com/TsukubaKobu/EroMusicSearch/releases) から `EroMusicSearch-x.x.x-arm64.dmg` をダウンロード
+1. [Releases](https://github.com/TsukubaKobu/EroMusicSearch/releases) からお使いの環境に合った DMG をダウンロード
+   - `EroMusicSearch-1.4.0-arm64.dmg` — Apple Silicon (M1/M2/M3/M4)
+   - `EroMusicSearch-1.4.0.dmg` — Intel Mac
 2. DMG を開き、アプリをアプリケーションフォルダへドラッグ
 3. 初回起動時は右クリック → 開く（Gatekeeper を回避）
 
@@ -116,7 +118,7 @@ npx electron-builder --win --x64
 
 | バージョン | 主な変更点 |
 |---|---|
-| **v1.4.0** | 安定性向上: fetch タイムアウト、コードモジュール化、CN ミラー自動非表示 |
+| **v1.4.0** | 安定性向上: fetch タイムアウト、コードモジュール化、CN ミラー自動非表示、Intel Mac 対応 |
 | **v1.3.0** | Anison.info を第 3 のデータソースとして追加 |
 | **v1.2.0** | 初回検索で結果が出ないバグを修正（セッション競合）|
 | **v1.1.0** | CN ミラー対応、Windows ビルド、UI 整理 |
