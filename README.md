@@ -38,7 +38,9 @@ EroMusicSearch is a desktop application for bidirectional lookup of ACG music me
 
 - **日本語ファジー検索** — ひらがな ↔ カタカナ自動変換 (ErogameScape)
 
-- **CN ミラー対応** — 「CN镜像」チェックボックスで ErogameScape のリクエストを `koko.kyara.top` 経由に切替（中国本土ユーザー向け）
+- **CN ミラー対応** — EGS 選択時のみ表示される「CN镜像」チェックボックスでリクエストを `koko.kyara.top` 経由に切替（中国本土ユーザー向け）
+
+- **タイムアウト保護** — 外部 API の応答がない場合、15 秒で自動切断（フリーズ防止）
 
 - **スクロール対応** — 小さいウィンドウでも縦横スクロールバーが表示される
 
@@ -114,6 +116,7 @@ npx electron-builder --win --x64
 
 | バージョン | 主な変更点 |
 |---|---|
+| **v1.4.0** | 安定性向上: fetch タイムアウト、コードモジュール化、CN ミラー自動非表示 |
 | **v1.3.0** | Anison.info を第 3 のデータソースとして追加 |
 | **v1.2.0** | 初回検索で結果が出ないバグを修正（セッション競合）|
 | **v1.1.0** | CN ミラー対応、Windows ビルド、UI 整理 |

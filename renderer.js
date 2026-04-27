@@ -15,10 +15,18 @@ function getCurrentMode() {
   return { source: s, mode: m };
 }
 
+function updateMirrorVisibility() {
+  const { source } = getCurrentMode();
+  mirrorCheck.closest('.mirror-label').classList.toggle('hidden', source !== 'erogamescape');
+}
+
 modeSelect.addEventListener('change', () => {
   hideResults();
+  updateMirrorVisibility();
   searchInput.focus();
 });
+
+updateMirrorVisibility();
 
 const performSearch = async () => {
   const term = searchInput.value.trim();
@@ -39,7 +47,7 @@ const performSearch = async () => {
       noResults.classList.remove('hidden');
     }
   } catch (error) {
-    errorBox.textContent = `Error: ${error}`;
+    errorBox.textContent = `エラー: ${error.message || error}`;
     errorBox.classList.remove('hidden');
   } finally {
     loader.classList.add('hidden');

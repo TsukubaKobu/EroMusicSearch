@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0] - 2026-04-27
+
+### Added
+- **Fetch timeout protection**: All external API calls now use `AbortController` with a 15-second timeout, preventing the app from freezing when an external service is unresponsive.
+- **CN Mirror auto-hide**: The "CN镜像" checkbox now only appears when ErogameScape mode is selected, reducing confusion when using Bangumi or Anison.info.
+- **MAX_WORKS constant**: The hardcoded limit `3` in Bangumi and Anison results has been extracted to a named constant (`MAX_WORKS`) in `constants.js` for better maintainability.
+
+### Changed
+- **Code modularization**: Refactored the monolithic `main.js` IPC handler (~250 lines) into separate modules under `src/` (`constants.js`, `erogamescape.js`, `bangumi.js`, `anison.js`), improving readability and maintainability.
+- **UI text fully localized to Japanese**: Error messages, loader text, and "no results" messages are now consistently in Japanese (was a mix of English/Japanese/Chinese).
+- **`package.json` description updated**: Now mentions all three data sources (previously only mentioned ErogameScape).
+- **Version bumped to 1.4.0**.
+
+---
+
 ## [1.3.0] - 2026-04-22
 
 ### Added
