@@ -7,16 +7,23 @@
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "test": "node --test"
   },
   "build": {
     "appId": "com.eromusicsearch.app",
     "mac": {
       "category": "public.app-category.utilities",
-      "target": ["default"]
+      "target": [
+        "default"
+      ]
     },
     "win": {
-      "target": ["nsis"],
+      "target": [
+        "nsis"
+      ],
       "icon": "build/icon.ico"
     },
     "nsis": {
@@ -29,6 +36,9 @@
   },
   "devDependencies": {
     "electron": "^34.0.0",
-    "electron-builder": "^25.0.0"
+    "electron-builder": "^25.0.0",
+    "eslint": "^10.3.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.8.3"
   }
 }
