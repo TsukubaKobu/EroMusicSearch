@@ -58,6 +58,16 @@ function escapeLike(str) {
   });
 }
 
+const BANGUMI_SUBJECT_TYPES = {
+  BOOK: 1,
+  ANIME: 2,
+  MUSIC: 3,
+  GAME: 4,
+  REAL: 6,
+};
+
+const ANISON_SONG_CATEGORIES = /^(OP|ED|IN|AR|IM|TM)/;
+
 module.exports = {
   EGS_URLS,
   ANISON_BASE,
@@ -72,4 +82,6 @@ module.exports = {
   toKatakana,
   toHiragana,
   escapeLike,
+  BANGUMI_SUBJECT_TYPES,
+  ANISON_SONG_CATEGORIES,
 };
