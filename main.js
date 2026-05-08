@@ -1,14 +1,40 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
+const fs = require('fs');
 const path = require('path');
 const { EGS_URLS, SOURCES, fetchWithTimeout } = require('./src/constants');
 const { searchErogameScape } = require('./src/erogamescape');
 const { searchBangumi } = require('./src/bangumi');
 const { searchAnison } = require('./src/anison');
 
+const statePath = path.join(app.getPath('userData'), 'window-state.json');
+
+function loadWindowState() {
+  try {
+    if (fs.existsSync(statePath)) {
+      return JSON.parse(fs.readFileSync(statePath, 'utf-8'));
+    }
+  } catch (e) {
+    console.warn('Failed to load window state:', e.message);
+  }
+  return {};
+}
+
+function saveWindowState(win) {
+  try {
+    const bounds = win.getBounds();
+    fs.writeFileSync(statePath, JSON.stringify(bounds));
+  } catch (e) {
+    console.warn('Failed to save window state:', e.message);
+  }
+}
+
 function createWindow() {
+  const saved = loadWindowState();
   const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 700,
+    width: saved.width || 900,
+    height: saved.height || 700,
+    x: saved.x,
+    y: saved.y,
     titleBarStyle: 'hiddenInset',
     backgroundColor: '#0f172a',
     webPreferences: {
@@ -19,6 +45,10 @@ function createWindow() {
   });
 
   mainWindow.loadFile('index.html');
+
+  mainWindow.on('close', () => saveWindowState(mainWindow));
+
+  return mainWindow;
 }
 
 app.whenReady().then(() => {
