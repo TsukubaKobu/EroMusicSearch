@@ -8,6 +8,7 @@ const resultsTable = document.getElementById('resultsTable');
 const noResults = document.getElementById('noResults');
 const tableHeaderRow = document.getElementById('tableHeaderRow');
 const tableBody = document.getElementById('tableBody');
+const cacheIndicator = document.getElementById('cacheIndicator');
 
 let sortColumn = null;
 let sortAsc = true;
@@ -31,6 +32,19 @@ modeSelect.addEventListener('change', () => {
 
 updateMirrorVisibility();
 
+function makeCacheKey(source, mode, term, mirrorMode) {
+  return `${source}|${mode}|${term}|${mirrorMode}`;
+}
+
+function showCacheIndicator(text) {
+  cacheIndicator.textContent = text;
+  cacheIndicator.classList.remove('hidden');
+}
+
+function hideCacheIndicator() {
+  cacheIndicator.classList.add('hidden');
+}
+
 const performSearch = async () => {
   const term = searchInput.value.trim();
   if (!term) {
@@ -43,24 +57,59 @@ const performSearch = async () => {
 
   hideResults();
   errorBox.classList.add('hidden');
+  hideCacheIndicator();
   loader.classList.remove('hidden');
   searchBtn.disabled = true;
 
+  const { source, mode } = getCurrentMode();
+  const mirrorMode = mirrorCheck.checked;
+  const cacheKey = makeCacheKey(source, mode, term, mirrorMode);
+
+  // Check cache first
   try {
-    const { source, mode } = getCurrentMode();
-    const mirrorMode = mirrorCheck.checked;
+    const cache = await window.api.getCache();
+    if (cache[cacheKey]) {
+      const cachedResults = cache[cacheKey].results;
+      if (cachedResults && cachedResults.length > 0) {
+        renderTable(cachedResults);
+        showCacheIndicator('キャッシュから表示（更新中...）');
+        loader.classList.add('hidden');
+      }
+    }
+  } catch (_) {
+    // Cache read failure is non-critical
+  }
+
+  // Network search (background if cache was shown)
+  try {
     const results = await window.api.searchDatabase({ source, mode, term, mirrorMode });
+
+    // Save to cache
+    try {
+      await window.api.setCache(cacheKey, results);
+    } catch (_) {
+      // Cache write failure is non-critical
+    }
+
     if (results && results.length > 0) {
+      hideCacheIndicator();
       renderTable(results);
-    } else {
+    } else if (cacheIndicator.classList.contains('hidden')) {
       noResults.textContent = '見つかりませんでした。';
       noResults.classList.remove('hidden');
     }
   } catch (error) {
-    errorBox.textContent = `エラー: ${error.message || error}`;
-    errorBox.classList.remove('hidden');
+    // If we already showed cached results, keep them visible
+    if (cacheIndicator.classList.contains('hidden')) {
+      errorBox.textContent = `エラー: ${error.message || error}`;
+      errorBox.classList.remove('hidden');
+    } else {
+      showCacheIndicator('キャッシュから表示（オフライン）');
+    }
   } finally {
-    loader.classList.add('hidden');
+    if (cacheIndicator.classList.contains('hidden')) {
+      loader.classList.add('hidden');
+    }
     searchBtn.disabled = false;
   }
 };
