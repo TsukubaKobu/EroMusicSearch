@@ -30,7 +30,13 @@ updateMirrorVisibility();
 
 const performSearch = async () => {
   const term = searchInput.value.trim();
-  if (!term) return;
+  if (!term) {
+    hideResults();
+    errorBox.classList.add('hidden');
+    noResults.textContent = '検索キーワードを入力してください。';
+    noResults.classList.remove('hidden');
+    return;
+  }
 
   hideResults();
   errorBox.classList.add('hidden');
@@ -44,6 +50,7 @@ const performSearch = async () => {
     if (results && results.length > 0) {
       renderTable(results);
     } else {
+      noResults.textContent = '見つかりませんでした。';
       noResults.classList.remove('hidden');
     }
   } catch (error) {
@@ -87,7 +94,7 @@ function renderTable(data) {
     headers.forEach((h) => {
       const td = document.createElement('td');
       td.textContent = row[h];
-      td.title = 'Click to copy';
+      td.title = 'クリックでコピー';
       td.addEventListener('click', () => {
         navigator.clipboard.writeText(td.textContent).then(() => {
           td.classList.add('copied');
