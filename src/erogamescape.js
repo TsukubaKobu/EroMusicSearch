@@ -9,7 +9,7 @@ const {
   fetchWithTimeout,
 } = require('./constants');
 
-async function searchErogameScape(term, mode, mirrorMode) {
+async function searchErogameScape(term, mode, mirrorMode, _fetch = fetchWithTimeout) {
   const rawTerm = escapeLike(term.trim());
 
   const hiraTerm = toHiragana(rawTerm);
@@ -45,7 +45,7 @@ ORDER BY m.name, gm.category;
   const egsUrl = mirrorMode ? EGS_URLS.mirror : EGS_URLS.primary;
 
   const runEgsQuery = async () => {
-    const response = await fetchWithTimeout(egsUrl, { method: 'POST', body: new URLSearchParams({ sql }) });
+    const response = await _fetch(egsUrl, { method: 'POST', body: new URLSearchParams({ sql }) });
     const rawData = await response.text();
     const $ = cheerio.load(rawData);
     const rows = [];

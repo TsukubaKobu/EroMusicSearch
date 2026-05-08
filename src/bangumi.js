@@ -1,10 +1,10 @@
 const { BANGUMI_BASE, BANGUMI_UA, MODES, MAX_WORKS, fetchWithTimeout } = require('./constants');
 
-async function searchBangumi(term, mode) {
+async function searchBangumi(term, mode, _fetch = fetchWithTimeout) {
   const isAnimeMode = mode === MODES.GAME_TO_MUSIC;
   const type = isAnimeMode ? '2' : '3';
 
-  const searchRes = await fetchWithTimeout(`${BANGUMI_BASE}search/subject/${encodeURIComponent(term)}?type=${type}`, {
+  const searchRes = await _fetch(`${BANGUMI_BASE}search/subject/${encodeURIComponent(term)}?type=${type}`, {
     headers: { 'User-Agent': BANGUMI_UA },
   });
   const searchData = await searchRes.json();
@@ -17,7 +17,7 @@ async function searchBangumi(term, mode) {
   for (let i = 0; i < limit; i++) {
     const subject = searchData.list[i];
 
-    const relRes = await fetchWithTimeout(`${BANGUMI_BASE}v0/subjects/${subject.id}/subjects`, {
+    const relRes = await _fetch(`${BANGUMI_BASE}v0/subjects/${subject.id}/subjects`, {
       headers: { 'User-Agent': BANGUMI_UA },
     });
 
