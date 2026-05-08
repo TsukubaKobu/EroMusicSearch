@@ -44,11 +44,63 @@
         <label class="mirror-label" title="使用大陸可用的EGS鏡像站 koko.kyara.top">
           <input type="checkbox" id="mirrorCheck" /> CN鏡像
         </label>
+      <div class="settings-wrapper">
+        <button id="settingsBtn" class="settings-btn" title="設定">⚙</button>
+        <div id="settingsMenu" class="settings-menu hidden">
+          <div class="menu-section">
+            <div class="menu-label">検索</div>
+            <div class="menu-row">
+              <span>既定のデータソース</span>
+              <select id="settingsSource">
+                <option value="erogamescape">EGS</option>
+                <option value="bangumi">Bangumi</option>
+                <option value="anison">Anison.info</option>
+              </select>
+            </div>
+            <div class="menu-row">
+              <span>既定の検索方向</span>
+              <select id="settingsMode">
+                <option value="gameToMusic">作品→音楽</option>
+                <option value="musicToGame">音楽→作品</option>
+              </select>
+            </div>
+            <div class="menu-row">
+              <label class="menu-check">
+                <input type="checkbox" id="settingsMirror" />
+                CNミラーを既定でON
+              </label>
+            </div>
+          </div>
+          <div class="menu-section">
+            <div class="menu-label">外観</div>
+            <div class="menu-row">
+              <span>フォントサイズ</span>
+              <select id="settingsFontSize">
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+              </select>
+            </div>
+            <div class="menu-row">
+              <span>ウィンドウサイズ</span>
+              <select id="settingsWindowSize">
+                <option value="800x600">800×600</option>
+                <option value="900x700">900×700</option>
+                <option value="1024x768">1024×768</option>
+              </select>
+            </div>
+          </div>
+          <div class="menu-section">
+            <button id="clearCacheBtn" class="menu-btn">🗑 キャッシュを削除</button>
+          </div>
+        </div>
+      </div>
       </div>
 
       <div id="loader" class="hidden">検索中...</div>
       <div id="errorBox" class="hidden"></div>
       <div id="noResults" class="hidden">見つかりませんでした。</div>
+      <div id="cacheIndicator" class="hidden cache-indicator"></div>
 
       <div class="results-wrapper">
         <table id="resultsTable" class="hidden">
