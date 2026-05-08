@@ -4,7 +4,7 @@ const { searchBangumi } = require('../src/bangumi');
 
 function mockFetch(searchBody, relationsBodies) {
   let callIndex = 0;
-  return async (url) => {
+  return async (_url) => {
     if (callIndex === 0) {
       callIndex++;
       return { json: async () => searchBody, ok: true };

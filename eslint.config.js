@@ -56,6 +56,19 @@ module.exports = [
     },
   },
   {
+    files: ['test/**/*.js'],
+    languageOptions: {
+      globals: Object.assign({}, nodeGlobals, {
+        describe: 'readonly',
+        it: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        before: 'readonly',
+        after: 'readonly',
+      }),
+    },
+  },
+  {
     files: ['renderer.js'],
     languageOptions: {
       globals: browserGlobals,
