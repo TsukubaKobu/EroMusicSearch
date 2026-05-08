@@ -1,5 +1,5 @@
 const cheerio = require('cheerio');
-const { ANISON_BASE, MODES, MAX_WORKS, fetchWithTimeout } = require('./constants');
+const { ANISON_BASE, MODES, MAX_WORKS, ANISON_SONG_CATEGORIES, fetchWithTimeout } = require('./constants');
 
 const UA = { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36' };
 
@@ -38,7 +38,7 @@ async function searchAnison(term, mode, _fetch = fetchWithTimeout) {
         if (tds.length < 2) return;
         const category = $d(tds[0]).text().trim();
         const musicName = $d(tds[1]).text().trim();
-        if (/^(OP|ED|IN|AR|IM)/.test(category) && musicName) {
+        if (ANISON_SONG_CATEGORIES.test(category) && musicName) {
           results.push({ workName: prog.name, category, musicName });
         }
       });
