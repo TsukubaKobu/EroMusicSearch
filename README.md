@@ -16,11 +16,11 @@ EroMusicSearch is a desktop application for bidirectional lookup of ACG music me
 
 ## データソース / Data Sources
 
-| Source | 対応ジャンル | 特徴 |
-|---|---|---|
-| **ErogameScape (批評空間)** | ギャルゲー / エロゲー | ゲーム音楽の網羅性が高い |
-| **Bangumi (番組計画)** | アニメ・ゲーム全般 | 日本語タイトルに完全対応、API ベース |
-| **Anison.info** | アニメ・ゲーム・映画 | アニソン専門DB、OP/ED/IN/AR まで網羅 |
+| Source                      | 対応ジャンル          | 特徴                                 |
+| --------------------------- | --------------------- | ------------------------------------ |
+| **ErogameScape (批評空間)** | ギャルゲー / エロゲー | ゲーム音楽の網羅性が高い             |
+| **Bangumi (番組計画)**      | アニメ・ゲーム全般    | 日本語タイトルに完全対応、API ベース |
+| **Anison.info**             | アニメ・ゲーム・映画  | アニソン専門DB、OP/ED/IN/AR まで網羅 |
 
 ---
 
@@ -50,7 +50,7 @@ EroMusicSearch is a desktop application for bidirectional lookup of ACG music me
 
 ## スクリーンショット / Screenshot
 
-> *(ウィンドウは小型化可能、最小限の UI)*
+> _(ウィンドウは小型化可能、最小限の UI)_
 >
 > ```
 > ┌─────────────────────────────────────────────┐
@@ -69,6 +69,7 @@ EroMusicSearch is a desktop application for bidirectional lookup of ACG music me
 ## インストール / Installation
 
 ### macOS
+
 1. [Releases](https://github.com/TsukubaKobu/EroMusicSearch/releases) からお使いの環境に合った DMG をダウンロード
    - `EroMusicSearch-1.4.0-arm64.dmg` — Apple Silicon (M1/M2/M3/M4)
    - `EroMusicSearch-1.4.0.dmg` — Intel Mac
@@ -76,6 +77,7 @@ EroMusicSearch is a desktop application for bidirectional lookup of ACG music me
 3. 初回起動時は右クリック → 開く（Gatekeeper を回避）
 
 ### Windows
+
 1. [Releases](https://github.com/TsukubaKobu/EroMusicSearch/releases) から `EroMusicSearch Setup x.x.x.exe` をダウンロード
 2. インストーラーを実行してインストール先を指定
 
@@ -101,14 +103,14 @@ npx electron-builder --win --x64
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Desktop | [Electron](https://www.electronjs.org/) |
-| UI | Vanilla HTML / CSS / JavaScript |
-| HTML Parsing | [Cheerio](https://cheerio.js.org/) |
-| Bangumi | [api.bgm.tv](https://bangumi.github.io/api/) REST API |
-| Anison.info | HTML scraping (`n.php` + `program/{id}.html`) |
-| ErogameScape | HTML scraping (POST SQL form) |
+| Layer        | Technology                                            |
+| ------------ | ----------------------------------------------------- |
+| Desktop      | [Electron](https://www.electronjs.org/)               |
+| UI           | Vanilla HTML / CSS / JavaScript                       |
+| HTML Parsing | [Cheerio](https://cheerio.js.org/)                    |
+| Bangumi      | [api.bgm.tv](https://bangumi.github.io/api/) REST API |
+| Anison.info  | HTML scraping (`n.php` + `program/{id}.html`)         |
+| ErogameScape | HTML scraping (POST SQL form)                         |
 
 ---
 
@@ -116,13 +118,13 @@ npx electron-builder --win --x64
 
 最新の変更履歴は [CHANGELOG.md](./CHANGELOG.md) を参照してください。
 
-| バージョン | 主な変更点 |
-|---|---|
+| バージョン | 主な変更点                                                                              |
+| ---------- | --------------------------------------------------------------------------------------- |
 | **v1.4.0** | 安定性向上: fetch タイムアウト、コードモジュール化、CN ミラー自動非表示、Intel Mac 対応 |
-| **v1.3.0** | Anison.info を第 3 のデータソースとして追加 |
-| **v1.2.0** | 初回検索で結果が出ないバグを修正（セッション競合）|
-| **v1.1.0** | CN ミラー対応、Windows ビルド、UI 整理 |
-| **v1.0.0** | 初回リリース（ErogameScape + Bangumi）|
+| **v1.3.0** | Anison.info を第 3 のデータソースとして追加                                             |
+| **v1.2.0** | 初回検索で結果が出ないバグを修正（セッション競合）                                      |
+| **v1.1.0** | CN ミラー対応、Windows ビルド、UI 整理                                                  |
+| **v1.0.0** | 初回リリース（ErogameScape + Bangumi）                                                  |
 
 ---
 

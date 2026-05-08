@@ -1,5 +1,13 @@
 const cheerio = require('cheerio');
-const { EGS_URLS, RETRY_DELAY_MS, MODES, toKatakana, toHiragana, escapeLike, fetchWithTimeout } = require('./constants');
+const {
+  EGS_URLS,
+  RETRY_DELAY_MS,
+  MODES,
+  toKatakana,
+  toHiragana,
+  escapeLike,
+  fetchWithTimeout,
+} = require('./constants');
 
 async function searchErogameScape(term, mode, mirrorMode) {
   const rawTerm = escapeLike(term.trim());
@@ -9,8 +17,8 @@ async function searchErogameScape(term, mode, mirrorMode) {
 
   const terms = Array.from(new Set([rawTerm, hiraTerm, kataTerm]));
 
-  const gameConds = terms.map(t => `g.gamename ILIKE '%${t}%' OR g.furigana ILIKE '%${t}%'`).join(' OR ');
-  const musicConds = terms.map(t => `m.name ILIKE '%${t}%' OR m.furigana ILIKE '%${t}%'`).join(' OR ');
+  const gameConds = terms.map((t) => `g.gamename ILIKE '%${t}%' OR g.furigana ILIKE '%${t}%'`).join(' OR ');
+  const musicConds = terms.map((t) => `m.name ILIKE '%${t}%' OR m.furigana ILIKE '%${t}%'`).join(' OR ');
 
   let sql = '';
 
@@ -51,7 +59,11 @@ ORDER BY m.name, gm.category;
         anyTable.find('tr').each((i, el) => {
           if (i === 0 && $(el).find('th').length > 0) return;
           const row = {};
-          $(el).find('td').each((j, td) => { row[headers[j] || `col${j}`] = $(td).text().trim(); });
+          $(el)
+            .find('td')
+            .each((j, td) => {
+              row[headers[j] || `col${j}`] = $(td).text().trim();
+            });
           if (Object.keys(row).length > 0) rows.push(row);
         });
       }
@@ -59,7 +71,11 @@ ORDER BY m.name, gm.category;
       $('table#result tr').each((i, el) => {
         if ($(el).find('th').length > 0) return;
         const row = {};
-        $(el).find('td').each((j, td) => { row[headers[j] || `col${j}`] = $(td).text().trim(); });
+        $(el)
+          .find('td')
+          .each((j, td) => {
+            row[headers[j] || `col${j}`] = $(td).text().trim();
+          });
         if (Object.keys(row).length > 0) rows.push(row);
       });
     }
@@ -68,7 +84,7 @@ ORDER BY m.name, gm.category;
 
   let results = await runEgsQuery();
   if (results.length === 0) {
-    await new Promise(r => setTimeout(r, RETRY_DELAY_MS));
+    await new Promise((r) => setTimeout(r, RETRY_DELAY_MS));
     results = await runEgsQuery();
   }
   return results;

@@ -1,57 +1,65 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EroMusicSearch — Anime &amp; Game Music Search</title>
-  <link rel="stylesheet" href="styles.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EroMusicSearch — Anime &amp; Game Music Search</title>
+    <link rel="stylesheet" href="styles.css" />
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content="@TsukobuP" />
-  <meta name="twitter:title" content="EroMusicSearch — Anime &amp; Game Music Search" />
-  <meta name="twitter:description" content="ゲーム・アニメの楽曲を3つのデータベースから双方向検索。ErogameScape / Bangumi / Anison.info対応。" />
-  <meta name="twitter:image" content="https://tsukubakobu.github.io/EroMusicSearch/og-image.png" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@TsukobuP" />
+    <meta name="twitter:title" content="EroMusicSearch — Anime &amp; Game Music Search" />
+    <meta
+      name="twitter:description"
+      content="ゲーム・アニメの楽曲を3つのデータベースから双方向検索。ErogameScape / Bangumi / Anison.info対応。"
+    />
+    <meta name="twitter:image" content="https://tsukubakobu.github.io/EroMusicSearch/og-image.png" />
 
-  <!-- Open Graph (fallback for other platforms) -->
-  <meta property="og:title" content="EroMusicSearch — Anime &amp; Game Music Search" />
-  <meta property="og:description" content="ゲーム・アニメの楽曲を3つのデータベースから双方向検索。ErogameScape / Bangumi / Anison.info対応。" />
-  <meta property="og:image" content="https://tsukubakobu.github.io/EroMusicSearch/og-image.png" />
-  <meta property="og:url" content="https://tsukubakobu.github.io/EroMusicSearch/" />
-  <meta property="og:type" content="website" />
-</head>
-<body>
-  <div class="titlebar"></div>
+    <!-- Open Graph (fallback for other platforms) -->
+    <meta property="og:title" content="EroMusicSearch — Anime &amp; Game Music Search" />
+    <meta
+      property="og:description"
+      content="ゲーム・アニメの楽曲を3つのデータベースから双方向検索。ErogameScape / Bangumi / Anison.info対応。"
+    />
+    <meta property="og:image" content="https://tsukubakobu.github.io/EroMusicSearch/og-image.png" />
+    <meta property="og:url" content="https://tsukubakobu.github.io/EroMusicSearch/" />
+    <meta property="og:type" content="website" />
+  </head>
+  <body>
+    <div class="titlebar"></div>
 
-  <div class="container">
-    <div class="search-bar">
-      <select id="modeSelect">
-        <option value="erogamescape|gameToMusic">EGS：作品→音楽</option>
-        <option value="erogamescape|musicToGame">EGS：音楽→作品</option>
-        <option value="bangumi|gameToMusic">Bangumi：作品→音楽</option>
-        <option value="bangumi|musicToGame">Bangumi：音楽→作品</option>
-        <option value="anison|gameToMusic">Anison.info：作品→音楽</option>
-        <option value="anison|musicToGame">Anison.info：音楽→作品</option>
-      </select>
-      <input type="text" id="searchInput" placeholder="日本語で入力..." autofocus>
-      <button id="searchBtn">↵</button>
-      <label class="mirror-label" title="使用大陸可用的EGS鏡像站 koko.kyara.top">
-        <input type="checkbox" id="mirrorCheck"> CN鏡像
-      </label>
+    <div class="container">
+      <div class="search-bar">
+        <select id="modeSelect">
+          <option value="erogamescape|gameToMusic">EGS：作品→音楽</option>
+          <option value="erogamescape|musicToGame">EGS：音楽→作品</option>
+          <option value="bangumi|gameToMusic">Bangumi：作品→音楽</option>
+          <option value="bangumi|musicToGame">Bangumi：音楽→作品</option>
+          <option value="anison|gameToMusic">Anison.info：作品→音楽</option>
+          <option value="anison|musicToGame">Anison.info：音楽→作品</option>
+        </select>
+        <input type="text" id="searchInput" placeholder="日本語で入力..." autofocus />
+        <button id="searchBtn">↵</button>
+        <label class="mirror-label" title="使用大陸可用的EGS鏡像站 koko.kyara.top">
+          <input type="checkbox" id="mirrorCheck" /> CN鏡像
+        </label>
+      </div>
+
+      <div id="loader" class="hidden">検索中...</div>
+      <div id="errorBox" class="hidden"></div>
+      <div id="noResults" class="hidden">見つかりませんでした。</div>
+
+      <div class="results-wrapper">
+        <table id="resultsTable" class="hidden">
+          <thead>
+            <tr id="tableHeaderRow"></tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
     </div>
 
-    <div id="loader" class="hidden">検索中...</div>
-    <div id="errorBox" class="hidden"></div>
-    <div id="noResults" class="hidden">見つかりませんでした。</div>
-
-    <div class="results-wrapper">
-      <table id="resultsTable" class="hidden">
-        <thead><tr id="tableHeaderRow"></tr></thead>
-        <tbody id="tableBody"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <script src="renderer.js"></script>
-</body>
+    <script src="renderer.js"></script>
+  </body>
 </html>

@@ -72,7 +72,7 @@ function renderTable(data) {
   const headers = Object.keys(data[0]);
 
   tableHeaderRow.innerHTML = '';
-  headers.forEach(h => {
+  headers.forEach((h) => {
     const th = document.createElement('th');
     if (h === 'workName') th.textContent = '作品';
     else if (h === 'category') th.textContent = '分類';
@@ -82,9 +82,9 @@ function renderTable(data) {
   });
 
   tableBody.innerHTML = '';
-  data.forEach(row => {
+  data.forEach((row) => {
     const tr = document.createElement('tr');
-    headers.forEach(h => {
+    headers.forEach((h) => {
       const td = document.createElement('td');
       td.textContent = row[h];
       td.title = 'Click to copy';

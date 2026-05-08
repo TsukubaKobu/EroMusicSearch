@@ -14,8 +14,8 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
-      nodeIntegration: false
-    }
+      nodeIntegration: false,
+    },
   });
 
   mainWindow.loadFile('index.html');
@@ -24,7 +24,7 @@ function createWindow() {
 app.whenReady().then(() => {
   createWindow();
 
-  const warmUp = (url) => fetchWithTimeout(url, { method: 'GET' }).catch(() => { });
+  const warmUp = (url) => fetchWithTimeout(url, { method: 'GET' }).catch(() => {});
   warmUp(EGS_URLS.primary);
   warmUp(EGS_URLS.mirror);
 

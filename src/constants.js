@@ -44,11 +44,16 @@ function toHiragana(str) {
 function escapeLike(str) {
   return str.replace(/[\\%_']/g, function (match) {
     switch (match) {
-      case '\\': return '\\\\';
-      case '%': return '\\%';
-      case '_': return '\\_';
-      case "'": return "''";
-      default: return match;
+      case '\\':
+        return '\\\\';
+      case '%':
+        return '\\%';
+      case '_':
+        return '\\_';
+      case "'":
+        return "''";
+      default:
+        return match;
     }
   });
 }

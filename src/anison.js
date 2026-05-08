@@ -8,10 +8,7 @@ async function searchAnison(term, mode) {
   const baseUrl = ANISON_BASE;
 
   if (isAnimeMode) {
-    const searchRes = await fetchWithTimeout(
-      `${baseUrl}n.php?m=pro&q=${encodeURIComponent(term)}`,
-      { headers: UA }
-    );
+    const searchRes = await fetchWithTimeout(`${baseUrl}n.php?m=pro&q=${encodeURIComponent(term)}`, { headers: UA });
     const searchHtml = await searchRes.text();
     const $ = cheerio.load(searchHtml);
 
@@ -24,10 +21,7 @@ async function searchAnison(term, mode) {
 
     const detailPages = await Promise.all(
       programs.slice(0, MAX_WORKS).map(async (prog) => {
-        const detailRes = await fetchWithTimeout(
-          `${baseUrl}program/${prog.id}.html`,
-          { headers: UA }
-        );
+        const detailRes = await fetchWithTimeout(`${baseUrl}program/${prog.id}.html`, { headers: UA });
         const detailHtml = await detailRes.text();
         return { prog, html: detailHtml };
       })
@@ -49,10 +43,7 @@ async function searchAnison(term, mode) {
     return results;
   }
 
-  const searchRes = await fetchWithTimeout(
-    `${baseUrl}n.php?m=song&q=${encodeURIComponent(term)}`,
-    { headers: UA }
-  );
+  const searchRes = await fetchWithTimeout(`${baseUrl}n.php?m=song&q=${encodeURIComponent(term)}`, { headers: UA });
   const searchHtml = await searchRes.text();
   const $ = cheerio.load(searchHtml);
 
