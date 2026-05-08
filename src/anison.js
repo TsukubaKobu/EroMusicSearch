@@ -19,13 +19,16 @@ async function searchAnison(term, mode, _fetch = fetchWithTimeout) {
       if (m) programs.push({ id: m[1], name: $(el).text().trim() });
     });
 
-    const detailPages = await Promise.all(
+    const detailResults = await Promise.allSettled(
       programs.slice(0, MAX_WORKS).map(async (prog) => {
         const detailRes = await _fetch(`${baseUrl}program/${prog.id}.html`, { headers: UA });
         const detailHtml = await detailRes.text();
         return { prog, html: detailHtml };
       })
     );
+    const detailPages = detailResults
+      .filter((r) => r.status === 'fulfilled')
+      .map((r) => r.value);
 
     const results = [];
     for (const { prog, html } of detailPages) {
