@@ -9,6 +9,14 @@ const noResults = document.getElementById('noResults');
 const tableHeaderRow = document.getElementById('tableHeaderRow');
 const tableBody = document.getElementById('tableBody');
 const cacheIndicator = document.getElementById('cacheIndicator');
+const settingsBtn = document.getElementById('settingsBtn');
+const settingsMenu = document.getElementById('settingsMenu');
+const settingsSource = document.getElementById('settingsSource');
+const settingsMode = document.getElementById('settingsMode');
+const settingsMirror = document.getElementById('settingsMirror');
+const settingsFontSize = document.getElementById('settingsFontSize');
+const settingsWindowSize = document.getElementById('settingsWindowSize');
+const clearCacheBtn = document.getElementById('clearCacheBtn');
 
 let sortColumn = null;
 let sortAsc = true;
@@ -185,3 +193,103 @@ function renderTable(data) {
 
   resultsTable.classList.remove('hidden');
 }
+
+// --- Settings menu ---
+
+// Toggle menu
+settingsBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  settingsMenu.classList.toggle('hidden');
+});
+
+// Close menu when clicking outside
+document.addEventListener('click', () => {
+  settingsMenu.classList.add('hidden');
+});
+
+settingsMenu.addEventListener('click', (e) => {
+  e.stopPropagation();
+});
+
+// Font size mapping
+const fontSizes = { S: '12px', M: '13px', L: '14px' };
+
+// Apply settings to UI
+function applySettings(s) {
+  // Default source and mode
+  if (s.defaultSource && s.defaultMode) {
+    modeSelect.value = `${s.defaultSource}|${s.defaultMode}`;
+    updateMirrorVisibility();
+  }
+
+  // Default mirror
+  if (s.defaultMirror !== undefined) {
+    mirrorCheck.checked = s.defaultMirror;
+  }
+
+  // Font size
+  if (s.fontSize && fontSizes[s.fontSize]) {
+    document.body.style.fontSize = fontSizes[s.fontSize];
+    settingsFontSize.value = s.fontSize;
+  }
+
+  // Window size
+  if (s.windowSize) {
+    settingsWindowSize.value = s.windowSize;
+  }
+
+  // Reflect current settings in menu controls
+  const { source, mode } = getCurrentMode();
+  settingsSource.value = source;
+  settingsMode.value = mode;
+  settingsMirror.checked = mirrorCheck.checked;
+}
+
+// Save settings when menu controls change
+function onSettingChange() {
+  window.api.saveSettings({
+    defaultSource: settingsSource.value,
+    defaultMode: settingsMode.value,
+    defaultMirror: settingsMirror.checked,
+    fontSize: settingsFontSize.value,
+    windowSize: settingsWindowSize.value,
+  });
+  applySettings({
+    defaultSource: settingsSource.value,
+    defaultMode: settingsMode.value,
+    defaultMirror: settingsMirror.checked,
+    fontSize: settingsFontSize.value,
+    windowSize: settingsWindowSize.value,
+  });
+}
+
+settingsSource.addEventListener('change', onSettingChange);
+settingsMode.addEventListener('change', onSettingChange);
+settingsMirror.addEventListener('change', onSettingChange);
+settingsFontSize.addEventListener('change', onSettingChange);
+settingsWindowSize.addEventListener('change', () => {
+  onSettingChange();
+  // Window size setting takes effect on next launch (main.js reads settings on startup)
+});
+
+// Clear cache
+clearCacheBtn.addEventListener('click', async () => {
+  await window.api.clearCache();
+  updateClearCacheLabel();
+});
+
+async function updateClearCacheLabel() {
+  try {
+    const cache = await window.api.getCache();
+    const count = Object.keys(cache).length;
+    clearCacheBtn.textContent = `🗑 キャッシュを削除 (${count}件)`;
+  } catch (_) {
+    clearCacheBtn.textContent = '🗑 キャッシュを削除';
+  }
+}
+
+// Load and apply settings on startup
+window.api.getSettings().then((s) => {
+  applySettings(s || {});
+  updateClearCacheLabel();
+});
