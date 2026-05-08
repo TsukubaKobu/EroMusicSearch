@@ -473,7 +473,7 @@
     </nav>
 
     <div class="hero">
-      <div class="badge">v1.4.0 — Stability & UX improvements</div>
+      <div class="badge">v1.5.0 — Cache, Settings &amp; 34 Tests</div>
 
       <h1>
         <span data-lang="ja" class="active">アニメ・ゲーム楽曲を、<br />瞬時に逆引き。</span>
@@ -522,6 +522,7 @@
             </select>
             <input class="mock-input" type="text" value="進撃の巨人" readonly />
             <button class="mock-btn">↵</button>
+            <span style="color: var(--muted); font-size: 14px; margin-left: 4px">⚙</span>
           </div>
           <table class="mock-table">
             <thead>
@@ -728,32 +729,32 @@
             </p>
           </div>
           <div class="feature-card">
-            <div class="feature-icon">🖥</div>
+            <div class="feature-icon">💾</div>
             <h3>
-              <span data-lang="ja" class="active">ネイティブ UI</span><span data-lang="zh">原生 UI 风格</span
-              ><span data-lang="en">Native-feel UI</span>
+              <span data-lang="ja" class="active">検索結果のキャッシュ</span><span data-lang="zh">搜索缓存</span
+              ><span data-lang="en">Result Caching</span>
             </h3>
             <p>
               <span data-lang="ja" class="active"
-                >極限まで削ぎ落としたダークモード UI。タイトルバー統合、スクロール対応、完全なキーボード操作。</span
-              ><span data-lang="zh">极简深色 UI，集成标题栏、支持滚动，可完全键盘操作。</span
+                >検索結果を自動的にローカル保存。再検索時は即表示＋バックグラウンド更新。オフラインでも利用可能。</span
+              ><span data-lang="zh">搜索结果自动本地存储，再次搜索即时显示并后台更新，离线也能用。</span
               ><span data-lang="en"
-                >Stripped-down dark UI with integrated title bar, scrollbars, and full keyboard support.</span
+                >Search results are automatically cached locally. Re-searches show instant results with background refresh. Works offline.</span
               >
             </p>
           </div>
           <div class="feature-card">
-            <div class="feature-icon">🪟</div>
+            <div class="feature-icon">⚙️</div>
             <h3>
-              <span data-lang="ja" class="active">クロスプラットフォーム</span><span data-lang="zh">跨平台</span
-              ><span data-lang="en">Cross-Platform</span>
+              <span data-lang="ja" class="active">設定メニュー</span><span data-lang="zh">设置菜单</span
+              ><span data-lang="en">Settings Menu</span>
             </h3>
             <p>
               <span data-lang="ja" class="active"
-                >macOS (Apple Silicon) と Windows x64 の両方に対応。インストーラー形式で即利用可能。</span
-              ><span data-lang="zh">同时支持 macOS（Apple Silicon）和 Windows x64，提供安装包，开箱即用。</span
+                >既定のデータソース・検索方向・CNミラー・フォントサイズ・ウィンドウサイズを設定。キャッシュもワンクリックで削除。</span
+              ><span data-lang="zh">设置默认数据源、搜索方向、CN镜像、字体大小、窗口大小，一键清除缓存。</span
               ><span data-lang="en"
-                >Runs on macOS Apple Silicon and Windows x64. Ready-to-install packages provided.</span
+                >Configure default data source, search direction, CN mirror, font size, and window size. One-click cache clearing.</span
               >
             </p>
           </div>
@@ -769,11 +770,11 @@
         <span data-lang="zh">立即下载</span>
         <span data-lang="en">Download Now</span>
       </h2>
-      <p style="color: var(--muted); margin-top: 8px; font-size: 0.9rem">v1.4.0 — Free &amp; Open Source</p>
+      <p style="color: var(--muted); margin-top: 8px; font-size: 0.9rem">v1.5.0 — Free &amp; Open Source</p>
       <div class="dl-cards">
         <a
           class="dl-card"
-          href="https://github.com/TsukubaKobu/EroMusicSearch/releases/latest/download/EroMusicSearch-1.4.0-arm64.dmg"
+          href="https://github.com/TsukubaKobu/EroMusicSearch/releases/latest/download/EroMusicSearch-1.5.0-arm64.dmg"
         >
           <div class="dl-icon"></div>
           <div class="dl-platform">macOS (ARM64)</div>
@@ -781,7 +782,7 @@
         </a>
         <a
           class="dl-card"
-          href="https://github.com/TsukubaKobu/EroMusicSearch/releases/latest/download/EroMusicSearch-1.4.0.dmg"
+          href="https://github.com/TsukubaKobu/EroMusicSearch/releases/latest/download/EroMusicSearch-1.5.0.dmg"
         >
           <div class="dl-icon"></div>
           <div class="dl-platform">macOS (Intel)</div>
@@ -789,7 +790,7 @@
         </a>
         <a
           class="dl-card"
-          href="https://github.com/TsukubaKobu/EroMusicSearch/releases/latest/download/EroMusicSearch-Setup-1.4.0-Windows-x64.exe"
+          href="https://github.com/TsukubaKobu/EroMusicSearch/releases/latest/download/EroMusicSearch-Setup-1.5.0-Windows-x64.exe"
         >
           <div class="dl-icon">🪟</div>
           <div class="dl-platform">Windows</div>

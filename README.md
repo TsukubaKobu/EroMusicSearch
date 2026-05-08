@@ -34,7 +34,15 @@ EroMusicSearch is a desktop application for bidirectional lookup of ACG music me
   - `Anison.info：作品 → 音楽` — 作品の全 OP/ED/IN/AR を取得
   - `Anison.info：音楽 → 作品` — 曲名から使用作品・用途・ジャンルを取得
 
+- **結果のキャッシュ** — 検索結果を自動保存し、再検索時に即表示。オフラインでも以前の検索結果が利用可能
+
+- **設定メニュー** — 検索バーの ⚙ アイコンから既定のデータソース / 検索方向 / CNミラー状態 / フォントサイズ / ウィンドウサイズを設定。次回起動時に自動反映
+
+- **テーブルソート** — カラムヘッダー（作品 / 分類 / 楽曲）をクリックで昇順/降順ソート。↑↓ インジケーター付き
+
 - **クリックでコピー** — テーブルの任意のセルをクリックするとクリップボードにコピー（フィードバックあり）
+
+- **ウィンドウ位置の記憶** — アプリを閉じても次回起動時にウィンドウの位置とサイズを復元
 
 - **日本語ファジー検索** — ひらがな ↔ カタカナ自動変換 (ErogameScape)
 
@@ -71,8 +79,8 @@ EroMusicSearch is a desktop application for bidirectional lookup of ACG music me
 ### macOS
 
 1. [Releases](https://github.com/TsukubaKobu/EroMusicSearch/releases) からお使いの環境に合った DMG をダウンロード
-   - `EroMusicSearch-1.4.0-arm64.dmg` — Apple Silicon (M1/M2/M3/M4)
-   - `EroMusicSearch-1.4.0.dmg` — Intel Mac
+   - `EroMusicSearch-1.5.0-arm64.dmg` — Apple Silicon (M1/M2/M3/M4)
+   - `EroMusicSearch-1.5.0.dmg` — Intel Mac
 2. DMG を開き、アプリをアプリケーションフォルダへドラッグ
 3. 初回起動時は右クリック → 開く（Gatekeeper を回避）
 
@@ -120,6 +128,7 @@ npx electron-builder --win --x64
 
 | バージョン | 主な変更点                                                                              |
 | ---------- | --------------------------------------------------------------------------------------- |
+| **v1.5.0** | キャッシュ機能、設定メニュー、テーブルソート、ウィンドウ位置記憶、テスト・CI 整備              |
 | **v1.4.0** | 安定性向上: fetch タイムアウト、コードモジュール化、CN ミラー自動非表示、Intel Mac 対応 |
 | **v1.3.0** | Anison.info を第 3 のデータソースとして追加                                             |
 | **v1.2.0** | 初回検索で結果が出ないバグを修正（セッション競合）                                      |

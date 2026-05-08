@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0] - 2026-05-08
+
+### Added
+
+- **Search result caching**: Cache-first strategy with background refresh. Search results are saved locally and displayed instantly on repeat queries. Works fully offline for previously searched terms.
+- **Settings menu**: Gear icon (⚙) in the search bar opens a dropdown settings panel:
+  - **Default data source**: Set EGS / Bangumi / Anison.info as the default on launch.
+  - **Default search direction**: Set 作品→音楽 or 音楽→作品 as default.
+  - **Default CN mirror state**: Enable CN mirror by default.
+  - **Font size**: Choose S (12px) / M (13px) / L (14px).
+  - **Window size**: Set default window size (800×600 / 900×700 / 1024×768).
+  - **Clear cache**: One-click cache deletion with entry count display.
+- **Table column sorting**: Click column headers (作品 / 分類 / 楽曲) to toggle ascending/descending sort with ↑↓ indicators. Uses Japanese-aware `localeCompare`.
+- **Window state persistence**: Window position and size are saved on close and restored on next launch.
+- **Empty search feedback**: Shows "検索キーワードを入力してください。" instead of silently doing nothing.
+- **Japanese copy tooltip**: Cell hover tooltip now reads "クリックでコピー".
+- **Promise.allSettled**: Anison.info detail page fetching uses `Promise.allSettled` so one failed page no longer kills all results.
+
+### Changed
+
+- **Silent errors now logged**: Warm-up failures and Bangumi relation fetch failures are now logged via `console.warn`.
+- **Magic numbers replaced**: Bangumi subject type codes and Anison category regex are now named constants (`BANGUMI_SUBJECT_TYPES`, `ANISON_SONG_CATEGORIES`).
+- **Engineer tooling added**:
+  - ESLint + Prettier + EditorConfig for code quality and consistent formatting.
+  - GitHub Actions CI pipeline running lint and tests on push/PR to `main`.
+  - 34 unit tests across 5 test files covering all utility functions and search backends.
+
+### Fixed
+
+- **Anison fail-fast**: `Promise.all` replaced with `Promise.allSettled` so a single failed detail page doesn't discard all other results.
+
 ## [1.4.0] - 2026-04-27
 
 ### Added
