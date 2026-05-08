@@ -9,6 +9,9 @@ const noResults = document.getElementById('noResults');
 const tableHeaderRow = document.getElementById('tableHeaderRow');
 const tableBody = document.getElementById('tableBody');
 
+let sortColumn = null;
+let sortAsc = true;
+
 // Always read from the actual DOM element to avoid stale state on reload
 function getCurrentMode() {
   const [s, m] = modeSelect.value.split('|');
@@ -85,8 +88,33 @@ function renderTable(data) {
     else if (h === 'category') th.textContent = '分類';
     else if (h === 'musicName') th.textContent = '楽曲';
     else th.textContent = h;
+
+    th.style.cursor = 'pointer';
+    th.addEventListener('click', () => {
+      if (sortColumn === h) {
+        sortAsc = !sortAsc;
+      } else {
+        sortColumn = h;
+        sortAsc = true;
+      }
+      renderTable(data);
+    });
+
+    if (sortColumn === h) {
+      th.classList.add(sortAsc ? 'sort-asc' : 'sort-desc');
+    }
+
     tableHeaderRow.appendChild(th);
   });
+
+  if (sortColumn) {
+    data = [...data].sort((a, b) => {
+      const va = (a[sortColumn] || '').toString();
+      const vb = (b[sortColumn] || '').toString();
+      const cmp = va.localeCompare(vb, 'ja');
+      return sortAsc ? cmp : -cmp;
+    });
+  }
 
   tableBody.innerHTML = '';
   data.forEach((row) => {

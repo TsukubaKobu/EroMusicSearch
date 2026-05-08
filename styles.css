@@ -207,3 +207,13 @@ td.copied {
   background: var(--copied-bg);
   color: var(--copied-text);
 }
+
+th.sort-asc::after {
+  content: ' ↑';
+  color: var(--accent);
+}
+
+th.sort-desc::after {
+  content: ' ↓';
+  color: var(--accent);
+}
