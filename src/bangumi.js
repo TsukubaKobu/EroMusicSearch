@@ -1,8 +1,8 @@
-const { BANGUMI_BASE, BANGUMI_UA, MODES, MAX_WORKS, fetchWithTimeout } = require('./constants');
+const { BANGUMI_BASE, BANGUMI_UA, MODES, MAX_WORKS, BANGUMI_SUBJECT_TYPES, fetchWithTimeout } = require('./constants');
 
 async function searchBangumi(term, mode, _fetch = fetchWithTimeout) {
   const isAnimeMode = mode === MODES.GAME_TO_MUSIC;
-  const type = isAnimeMode ? '2' : '3';
+  const type = isAnimeMode ? String(BANGUMI_SUBJECT_TYPES.ANIME) : String(BANGUMI_SUBJECT_TYPES.MUSIC);
 
   const searchRes = await _fetch(`${BANGUMI_BASE}search/subject/${encodeURIComponent(term)}?type=${type}`, {
     headers: { 'User-Agent': BANGUMI_UA },
@@ -31,7 +31,7 @@ async function searchBangumi(term, mode, _fetch = fetchWithTimeout) {
 
     relations.forEach((rel) => {
       if (isAnimeMode) {
-        if (rel.type === 3) {
+        if (rel.type === BANGUMI_SUBJECT_TYPES.MUSIC) {
           results.push({
             workName: subject.name || subject.name_cn,
             category: rel.relation,
@@ -39,7 +39,7 @@ async function searchBangumi(term, mode, _fetch = fetchWithTimeout) {
           });
         }
       } else {
-        if (rel.type === 2 || rel.type === 4) {
+        if (rel.type === BANGUMI_SUBJECT_TYPES.ANIME || rel.type === BANGUMI_SUBJECT_TYPES.GAME) {
           results.push({
             musicName: subject.name || subject.name_cn,
             category: rel.relation,
