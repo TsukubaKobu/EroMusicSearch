@@ -84,7 +84,7 @@ const performSearch = async () => {
         loader.classList.add('hidden');
       }
     }
-  } catch (_) {
+  } catch {
     // Cache read failure is non-critical
   }
 
@@ -95,7 +95,7 @@ const performSearch = async () => {
     // Save to cache
     try {
       await window.api.setCache(cacheKey, results);
-    } catch (_) {
+    } catch {
       // Cache write failure is non-critical
     }
 
@@ -283,7 +283,7 @@ async function updateClearCacheLabel() {
     const cache = await window.api.getCache();
     const count = Object.keys(cache).length;
     clearCacheBtn.textContent = `🗑 キャッシュを削除 (${count}件)`;
-  } catch (_) {
+  } catch {
     clearCacheBtn.textContent = '🗑 キャッシュを削除';
   }
 }
