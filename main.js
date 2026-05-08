@@ -24,9 +24,12 @@ function createWindow() {
 app.whenReady().then(() => {
   createWindow();
 
-  const warmUp = (url) => fetchWithTimeout(url, { method: 'GET' }).catch(() => {});
-  warmUp(EGS_URLS.primary);
-  warmUp(EGS_URLS.mirror);
+  const warmUp = (url, label) =>
+    fetchWithTimeout(url, { method: 'GET' }).catch((e) =>
+      console.warn(`Warm-up failed for ${label}:`, e.message)
+    );
+  warmUp(EGS_URLS.primary, 'EGS primary');
+  warmUp(EGS_URLS.mirror, 'EGS mirror');
 
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

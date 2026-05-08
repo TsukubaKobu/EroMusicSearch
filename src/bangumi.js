@@ -21,7 +21,12 @@ async function searchBangumi(term, mode, _fetch = fetchWithTimeout) {
       headers: { 'User-Agent': BANGUMI_UA },
     });
 
-    if (!relRes.ok) continue;
+    if (!relRes.ok) {
+      console.warn(
+        `Relation fetch failed for subject ${subject.id}: HTTP ${relRes.status}`
+      );
+      continue;
+    }
     const relations = await relRes.json();
 
     relations.forEach((rel) => {
