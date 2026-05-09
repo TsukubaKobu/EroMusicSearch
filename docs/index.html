@@ -493,6 +493,13 @@
         >
       </p>
 
+      <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 16px; flex-wrap: wrap">
+        <img alt="CI" src="https://github.com/TsukubaKobu/EroMusicSearch/actions/workflows/ci.yml/badge.svg" style="height: 20px" />
+        <img alt="Version" src="https://img.shields.io/badge/version-1.6.0-blue" style="height: 20px" />
+        <img alt="License" src="https://img.shields.io/badge/license-MIT-green" style="height: 20px" />
+        <img alt="Platform" src="https://img.shields.io/badge/platform-macOS%20%7C%20Windows-lightgrey" style="height: 20px" />
+      </div>
+
       <div class="btn-group">
         <a class="btn btn-primary" href="https://github.com/TsukubaKobu/EroMusicSearch/releases/latest">
           ⬇
@@ -518,18 +525,18 @@
         <div class="window-body">
           <div class="mock-bar">
             <select class="mock-select">
-              <option>Anison.info：作品→音楽</option>
+              <option>Anison.info ▼</option>
             </select>
+            <button class="mock-btn" style="background: var(--accent); color: #fff; font-size: 11px; padding: 5px 8px; border: none;">作品→曲</button>
             <input class="mock-input" type="text" value="進撃の巨人" readonly />
-            <button class="mock-btn">↵</button>
-            <span style="color: var(--muted); font-size: 14px; margin-left: 4px">⚙</span>
+            <span style="color: var(--muted); font-size: 14px">⚙</span>
           </div>
           <table class="mock-table">
             <thead>
               <tr>
                 <th>
-                  <span data-lang="ja" class="active">楽曲</span><span data-lang="zh">楽曲</span
-                  ><span data-lang="en">Song</span>
+                  <span data-lang="ja" class="active">楽曲 ↑</span><span data-lang="zh">楽曲 ↑</span
+                  ><span data-lang="en">Song ↑</span>
                 </th>
                 <th>
                   <span data-lang="ja" class="active">分類</span><span data-lang="zh">分类</span
@@ -598,10 +605,10 @@
           </span>
           <p class="source-desc">
             <span data-lang="ja" class="active"
-              >ギャルゲー・エロゲーの音楽情報に特化した日本最大級のデータベース。SQL ベースの高精度検索に対応。</span
+              >ギャルゲー・エロゲーの音楽情報に特化した日本最大級のデータベース。SQL POST + HTMLスクレイピングで高精度検索に対応。</span
             >
-            <span data-lang="zh">日本最大的美少女游戏音乐数据库，支持基于 SQL 的高精度查询。</span>
-            <span data-lang="en">Japan's largest galgame music database with SQL-powered precise search.</span>
+            <span data-lang="zh">日本最大的美少女游戏音乐数据库，通过 SQL POST + HTML抓取实现高精度查询。</span>
+            <span data-lang="en">Japan's largest galgame music database with SQL POST + HTML scraping for precise search.</span>
           </p>
         </div>
         <div class="source-card">
@@ -630,11 +637,11 @@
           </span>
           <p class="source-desc">
             <span data-lang="ja" class="active"
-              >OP/ED/IN/AR まで網羅したアニソン専門 DB。作品ページから全使用楽曲を一括取得できます。</span
+              >OP/ED/IN/AR まで網羅したアニソン専門 DB。HTMLスクレイピングで作品ページから全使用楽曲を一括取得。</span
             >
-            <span data-lang="zh">涵盖 OP/ED/IN/AR 的动画歌曲专属数据库，可从作品页一次性获取所有使用曲目。</span>
+            <span data-lang="zh">涵盖 OP/ED/IN/AR 的动画歌曲专属数据库，通过 HTML抓取从作品页一次性获取所有使用曲目。</span>
             <span data-lang="en"
-              >Comprehensive anisong DB covering OP/ED/IN/AR. Fetch all songs from a series in one lookup.</span
+              >Comprehensive anisong DB covering OP/ED/IN/AR. HTML scraping fetches all songs from a series in one lookup.</span
             >
           </p>
         </div>
@@ -658,12 +665,12 @@
               ><span data-lang="en">Bidirectional Search</span>
             </h3>
             <p>
-              <span data-lang="ja" class="active"
-                >「曲名 → 作品」「作品 → 全楽曲」の 6 種類のモードをドロップダウン一つで切り替え。</span
-              ><span data-lang="zh">6 种搜索模式，下拉菜单一键切换，支持「曲名→作品」和「作品→全曲」两个方向。</span
-              ><span data-lang="en"
-                >6 search modes in one dropdown. Switch between Song→Work and Work→Songs instantly.</span
-              >
+                <span data-lang="ja" class="active"
+                  >データソース選択 + 方向切替ボタンで 6 モードを直感的に切替。「曲名→作品」と「作品→全楽曲」の双方向検索。</span
+                ><span data-lang="zh">数据源选择 + 方向切换按钮，6 种模式直观切换，支持「曲名→作品」和「作品→全曲」双向检索。</span
+                ><span data-lang="en"
+                  >6 modes via source selector + direction toggle. Bidirectional: Song→Work and Work→All Songs.</span
+                >
             </p>
           </div>
           <div class="feature-card">
@@ -688,14 +695,13 @@
               ><span data-lang="en">CN Mirror Support</span>
             </h3>
             <p>
-              <span data-lang="ja" class="active"
-                >EGS モード時のみ表示される「CN镜像」で koko.kyara.top 経由に切替。他モードでは自動非表示。</span
-              ><span data-lang="zh"
-                >仅 EGS 模式时显示「CN镜像」复选框，自动切换至 koko.kyara.top，其他模式自动隐藏。</span
-              ><span data-lang="en"
-                >The CN Mirror checkbox appears only in EGS mode, routing requests via koko.kyara.top. Auto-hidden for
-                other sources.</span
-              >
+                <span data-lang="ja" class="active"
+                  >設定メニューから有効化。EGS クエリを koko.kyara.top ミラー経由に切替。中国本土ユーザー向け。</span
+                ><span data-lang="zh"
+                  >从设置菜单启用，EGS 查询自动切换至 koko.kyara.top 镜像。面向中国大陆用户。</span
+                ><span data-lang="en"
+                  >Enable in Settings menu. Routes EGS queries via koko.kyara.top mirror for mainland China users.</span
+                >
             </p>
           </div>
           <div class="feature-card">
@@ -735,12 +741,12 @@
               ><span data-lang="en">Result Caching</span>
             </h3>
             <p>
-              <span data-lang="ja" class="active"
-                >検索結果を自動的にローカル保存。再検索時は即表示＋バックグラウンド更新。オフラインでも利用可能。</span
-              ><span data-lang="zh">搜索结果自动本地存储，再次搜索即时显示并后台更新，离线也能用。</span
-              ><span data-lang="en"
-                >Search results are automatically cached locally. Re-searches show instant results with background refresh. Works offline.</span
-              >
+                <span data-lang="ja" class="active"
+                  >キャッシュファースト戦略：再検索時にキャッシュを即表示し、バックグラウンドで最新データを取得。オフライン完全対応。</span
+                ><span data-lang="zh">缓存优先策略：再次搜索即时显示缓存结果，后台获取最新数据。完全支持离线使用。</span
+                ><span data-lang="en"
+                  >Cache-first strategy: instant display from cache on re-search with background refresh. Fully offline-capable.</span
+                >
             </p>
           </div>
           <div class="feature-card">
@@ -750,12 +756,27 @@
               ><span data-lang="en">Settings Menu</span>
             </h3>
             <p>
-              <span data-lang="ja" class="active"
-                >既定のデータソース・検索方向・CNミラー・フォントサイズ・ウィンドウサイズを設定。キャッシュもワンクリックで削除。</span
-              ><span data-lang="zh">设置默认数据源、搜索方向、CN镜像、字体大小、窗口大小，一键清除缓存。</span
-              ><span data-lang="en"
-                >Configure default data source, search direction, CN mirror, font size, and window size. One-click cache clearing.</span
-              >
+                <span data-lang="ja" class="active"
+                  >既定のデータソース・検索方向・CNミラーの初期状態を設定。キャッシュはワンクリックで全削除可能。</span
+                ><span data-lang="zh">设置默认数据源、搜索方向、CN镜像的初始状态，一键清除全部缓存。</span
+                ><span data-lang="en"
+                   >Set default data source, search direction, and CN mirror state. One-click cache clearing.</span
+                >
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">↕️</div>
+            <h3>
+              <span data-lang="ja" class="active">テーブルソート＆リサイズ</span><span data-lang="zh">表格排序与列宽调整</span
+              ><span data-lang="en">Table Sort &amp; Resize</span>
+            </h3>
+            <p>
+                <span data-lang="ja" class="active"
+                  >カラムヘッダークリックで昇降順ソート（日本語対応）。ヘッダー境界ドラッグで列幅を自由に調整可能。</span
+                ><span data-lang="zh">点击列标题升降序排序（支持日文），拖动列边界自由调整列宽。</span
+                ><span data-lang="en"
+                  >Click column headers to sort ascending/descending (Japanese-aware). Drag header borders to resize columns.</span
+                >
             </p>
           </div>
         </div>
