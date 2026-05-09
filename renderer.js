@@ -1,9 +1,6 @@
 const sourceSelect = document.getElementById('sourceSelect');
-const directionSelect = document.getElementById('directionSelect');
+const directionToggle = document.getElementById('directionToggle');
 const searchInput = document.getElementById('searchInput');
-const searchBtn = document.getElementById('searchBtn');
-const mirrorCheck = document.getElementById('mirrorCheck');
-const mirrorLabel = mirrorCheck.closest('.mirror-label');
 const statusBar = document.getElementById('statusBar');
 const resultsTable = document.getElementById('resultsTable');
 const tableHeaderRow = document.getElementById('tableHeaderRow');
@@ -24,29 +21,31 @@ function getCurrentSource() {
 }
 
 function getCurrentMode() {
-  return directionSelect.value;
+  return directionToggle.dataset.mode || 'gameToMusic';
 }
 
-function updateMirrorVisibility() {
-  mirrorLabel.classList.toggle('hidden', getCurrentSource() !== 'erogamescape');
+function updateDirectionToggle() {
+  const mode = getCurrentMode();
+  directionToggle.textContent = mode === 'gameToMusic' ? '作品→曲' : '曲→作品';
+  directionToggle.dataset.mode = mode;
+  if (settingsMode) settingsMode.value = mode;
 }
+
+directionToggle.addEventListener('click', () => {
+  const next = getCurrentMode() === 'gameToMusic' ? 'musicToGame' : 'gameToMusic';
+  directionToggle.dataset.mode = next;
+  updateDirectionToggle();
+  hideResults();
+  searchInput.focus();
+  onSettingChange();
+});
 
 sourceSelect.addEventListener('change', () => {
   hideResults();
-  updateMirrorVisibility();
   searchInput.focus();
   settingsSource.value = getCurrentSource();
   onSettingChange();
 });
-
-directionSelect.addEventListener('change', () => {
-  hideResults();
-  searchInput.focus();
-  settingsMode.value = getCurrentMode();
-  onSettingChange();
-});
-
-updateMirrorVisibility();
 
 function makeItemKey(source, workName, category, musicName) {
   return `@|${source}|${workName}|${category}|${musicName}`;
@@ -78,11 +77,11 @@ const performSearch = async () => {
   hideResults();
   hideStatus();
   showStatus('検索中...');
-  searchBtn.disabled = true;
+  searchInput.disabled = true;
 
   const source = getCurrentSource();
   const mode = getCurrentMode();
-  const mirrorMode = mirrorCheck.checked;
+  const mirrorMode = settingsMirror.checked;
 
   let cacheShown = false;
 
@@ -143,11 +142,9 @@ const performSearch = async () => {
       showStatus('キャッシュから表示（オフライン）', 'var(--accent)');
     }
   } finally {
-    searchBtn.disabled = false;
+    searchInput.disabled = false;
   }
 };
-
-searchBtn.addEventListener('click', performSearch);
 searchInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') performSearch();
 });
@@ -275,7 +272,20 @@ function renderTable(data) {
 
 settingsBtn.addEventListener('click', (e) => {
   e.stopPropagation();
-  settingsMenu.classList.toggle('hidden');
+  const isHidden = settingsMenu.classList.contains('hidden');
+  if (isHidden) {
+    const btnRect = settingsBtn.getBoundingClientRect();
+    let top = btnRect.bottom + 4;
+    // Temporarily show to measure height, then reposition if needed
+    settingsMenu.classList.remove('hidden');
+    const menuH = settingsMenu.scrollHeight;
+    if (top + menuH > window.innerHeight - 8) {
+      top = btnRect.top - menuH - 4;
+    }
+    settingsMenu.style.top = Math.max(4, top) + 'px';
+  } else {
+    settingsMenu.classList.add('hidden');
+  }
 });
 
 document.addEventListener('click', () => {
@@ -289,18 +299,17 @@ settingsMenu.addEventListener('click', (e) => {
 function applySettings(s) {
   if (s.defaultSource) {
     sourceSelect.value = s.defaultSource;
-    updateMirrorVisibility();
   }
   if (s.defaultMode) {
-    directionSelect.value = s.defaultMode;
+    directionToggle.dataset.mode = s.defaultMode;
+    updateDirectionToggle();
   }
   if (s.defaultMirror !== undefined) {
-    mirrorCheck.checked = s.defaultMirror;
+    settingsMirror.checked = s.defaultMirror;
   }
 
   settingsSource.value = getCurrentSource();
   settingsMode.value = getCurrentMode();
-  settingsMirror.checked = mirrorCheck.checked;
 }
 
 function onSettingChange() {

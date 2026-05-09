@@ -2,7 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.5.0] - 2026-05-08
+## [1.6.0] - 2026-05-09
+
+### Changed
+
+- **UI simplification**: Search mode split into separate source (EGS/Bangumi/Anison) and direction controls.
+- **Direction toggle**: Replaced direction dropdown with compact toggle button (作品→曲 / 曲→作品), saving ~50% horizontal space.
+- **Mirror moved to settings**: CN mirror checkbox moved from search bar into settings menu, freeing search bar space.
+- **Status unified**: Loader, error, no-results, and cache indicator merged into single `#statusBar`.
+- **Resizable columns**: Table columns can be resized by dragging header borders.
+- **Item-level cache**: Cache granularity improved from search-level to item-level with search index.
+- **Popup settings menu**: Settings menu now uses `position: fixed` with dynamic Y-positioning, visible even in ultra-narrow windows.
+- **No minimum width**: All CSS `min-width` constraints removed; search bar scrolls horizontally when needed.
+
+### Removed
+
+- Search button (Enter key is sufficient).
+- Font size setting (fixed at 12px).
+- Window size setting (persists last size automatically).
 
 ### Added
 

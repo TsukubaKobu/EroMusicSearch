@@ -36,15 +36,8 @@
           <option value="bangumi">Bangumi</option>
           <option value="anison">Anison</option>
         </select>
-        <select id="directionSelect">
-          <option value="gameToMusic">作品→音楽</option>
-          <option value="musicToGame">音楽→作品</option>
-        </select>
-        <input type="text" id="searchInput" placeholder="日本語で入力..." autofocus />
-        <button id="searchBtn">検索</button>
-        <label class="mirror-label" title="EGS镜像站 koko.kyara.top">
-          <input type="checkbox" id="mirrorCheck" /> 镜像
-        </label>
+        <button id="directionToggle" title="検索方向切替">作品→曲</button>
+        <input type="text" id="searchInput" placeholder="日本語で入力... (Enter 検索)" autofocus />
         <div class="settings-wrapper">
           <button id="settingsBtn" class="settings-btn" title="設定">⚙</button>
           <div id="settingsMenu" class="settings-menu hidden">
