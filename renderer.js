@@ -1,123 +1,148 @@
-const modeSelect = document.getElementById('modeSelect');
+const sourceSelect = document.getElementById('sourceSelect');
+const directionSelect = document.getElementById('directionSelect');
 const searchInput = document.getElementById('searchInput');
 const searchBtn = document.getElementById('searchBtn');
 const mirrorCheck = document.getElementById('mirrorCheck');
-const loader = document.getElementById('loader');
-const errorBox = document.getElementById('errorBox');
+const mirrorLabel = mirrorCheck.closest('.mirror-label');
+const statusBar = document.getElementById('statusBar');
 const resultsTable = document.getElementById('resultsTable');
-const noResults = document.getElementById('noResults');
 const tableHeaderRow = document.getElementById('tableHeaderRow');
 const tableBody = document.getElementById('tableBody');
-const cacheIndicator = document.getElementById('cacheIndicator');
 const settingsBtn = document.getElementById('settingsBtn');
 const settingsMenu = document.getElementById('settingsMenu');
 const settingsSource = document.getElementById('settingsSource');
 const settingsMode = document.getElementById('settingsMode');
 const settingsMirror = document.getElementById('settingsMirror');
-const settingsFontSize = document.getElementById('settingsFontSize');
-const settingsWindowSize = document.getElementById('settingsWindowSize');
 const clearCacheBtn = document.getElementById('clearCacheBtn');
 
 let sortColumn = null;
 let sortAsc = true;
+const columnWidths = {};
 
-// Always read from the actual DOM element to avoid stale state on reload
+function getCurrentSource() {
+  return sourceSelect.value;
+}
+
 function getCurrentMode() {
-  const [s, m] = modeSelect.value.split('|');
-  return { source: s, mode: m };
+  return directionSelect.value;
 }
 
 function updateMirrorVisibility() {
-  const { source } = getCurrentMode();
-  mirrorCheck.closest('.mirror-label').classList.toggle('hidden', source !== 'erogamescape');
+  mirrorLabel.classList.toggle('hidden', getCurrentSource() !== 'erogamescape');
 }
 
-modeSelect.addEventListener('change', () => {
+sourceSelect.addEventListener('change', () => {
   hideResults();
   updateMirrorVisibility();
   searchInput.focus();
+  settingsSource.value = getCurrentSource();
+  onSettingChange();
+});
+
+directionSelect.addEventListener('change', () => {
+  hideResults();
+  searchInput.focus();
+  settingsMode.value = getCurrentMode();
+  onSettingChange();
 });
 
 updateMirrorVisibility();
 
-function makeCacheKey(source, mode, term, mirrorMode) {
-  return `${source}|${mode}|${term}|${mirrorMode}`;
+function makeItemKey(source, workName, category, musicName) {
+  return `@|${source}|${workName}|${category}|${musicName}`;
 }
 
-function showCacheIndicator(text) {
-  cacheIndicator.textContent = text;
-  cacheIndicator.classList.remove('hidden');
+function makeSearchKey(source, mode, term, mirrorMode) {
+  return `!|${source}|${mode}|${term}|${mirrorMode}`;
 }
 
-function hideCacheIndicator() {
-  cacheIndicator.classList.add('hidden');
+function showStatus(text, color) {
+  statusBar.textContent = text;
+  statusBar.style.color = color || 'var(--muted)';
+  statusBar.classList.remove('hidden');
+}
+
+function hideStatus() {
+  statusBar.classList.add('hidden');
+  statusBar.textContent = '';
 }
 
 const performSearch = async () => {
   const term = searchInput.value.trim();
   if (!term) {
     hideResults();
-    errorBox.classList.add('hidden');
-    noResults.textContent = '検索キーワードを入力してください。';
-    noResults.classList.remove('hidden');
+    showStatus('検索キーワードを入力してください。');
     return;
   }
 
   hideResults();
-  errorBox.classList.add('hidden');
-  hideCacheIndicator();
-  loader.classList.remove('hidden');
+  hideStatus();
+  showStatus('検索中...');
   searchBtn.disabled = true;
 
-  const { source, mode } = getCurrentMode();
+  const source = getCurrentSource();
+  const mode = getCurrentMode();
   const mirrorMode = mirrorCheck.checked;
-  const cacheKey = makeCacheKey(source, mode, term, mirrorMode);
 
-  // Check cache first
+  let cacheShown = false;
+
+  // Check cache first (item-level cache via search index)
   try {
     const cache = await window.api.getCache();
-    if (cache[cacheKey]) {
-      const cachedResults = cache[cacheKey].results;
-      if (cachedResults && cachedResults.length > 0) {
+    const searchKey = makeSearchKey(source, mode, term, mirrorMode);
+    const searchEntry = cache[searchKey];
+    if (searchEntry && searchEntry.results && searchEntry.results.itemKeys) {
+      const cachedResults = searchEntry.results.itemKeys
+        .map((k) => cache[k]?.results)
+        .filter(Boolean);
+      if (cachedResults.length > 0) {
         renderTable(cachedResults);
-        showCacheIndicator('キャッシュから表示（更新中...）');
-        loader.classList.add('hidden');
+        showStatus('キャッシュから表示（更新中...）', 'var(--accent)');
+        cacheShown = true;
       }
     }
   } catch {
     // Cache read failure is non-critical
   }
 
-  // Network search (background if cache was shown)
+  // Network search
   try {
     const results = await window.api.searchDatabase({ source, mode, term, mirrorMode });
 
-    // Save to cache
-    try {
-      await window.api.setCache(cacheKey, results);
-    } catch {
-      // Cache write failure is non-critical
+    // Save each result as an individual cache entry + save search index
+    if (results && results.length > 0) {
+      try {
+        const cache = await window.api.getCache();
+        const searchKey = makeSearchKey(source, mode, term, mirrorMode);
+        const itemKeys = [];
+        for (const item of results) {
+          const itemKey = makeItemKey(source, item.workName, item.category, item.musicName);
+          itemKeys.push(itemKey);
+          if (!cache[itemKey]) {
+            cache[itemKey] = { results: { workName: item.workName, category: item.category, musicName: item.musicName }, cachedAt: Date.now() };
+          }
+        }
+        cache[searchKey] = { results: { itemKeys }, cachedAt: Date.now() };
+        await window.api.saveCache(cache);
+      } catch {
+        // Cache write failure is non-critical
+      }
     }
 
     if (results && results.length > 0) {
-      hideCacheIndicator();
+      hideStatus();
       renderTable(results);
-    } else if (cacheIndicator.classList.contains('hidden')) {
-      noResults.textContent = '見つかりませんでした。';
-      noResults.classList.remove('hidden');
+      cacheShown = false;
+    } else if (!cacheShown) {
+      showStatus('見つかりませんでした。');
     }
   } catch (error) {
-    // If we already showed cached results, keep them visible
-    if (cacheIndicator.classList.contains('hidden')) {
-      errorBox.textContent = `エラー: ${error.message || error}`;
-      errorBox.classList.remove('hidden');
+    if (!cacheShown) {
+      showStatus(`エラー: ${error.message || error}`, '#ff6b6b');
     } else {
-      showCacheIndicator('キャッシュから表示（オフライン）');
+      showStatus('キャッシュから表示（オフライン）', 'var(--accent)');
     }
   } finally {
-    if (cacheIndicator.classList.contains('hidden')) {
-      loader.classList.add('hidden');
-    }
     searchBtn.disabled = false;
   }
 };
@@ -129,7 +154,6 @@ searchInput.addEventListener('keydown', (e) => {
 
 function hideResults() {
   resultsTable.classList.add('hidden');
-  noResults.classList.add('hidden');
   tableHeaderRow.innerHTML = '';
   tableBody.innerHTML = '';
 }
@@ -137,6 +161,13 @@ function hideResults() {
 function renderTable(data) {
   if (!data.length) return;
   const headers = Object.keys(data[0]);
+
+  // Apply fixed layout if columns were resized
+  if (Object.keys(columnWidths).length > 0) {
+    resultsTable.style.tableLayout = 'fixed';
+  } else {
+    resultsTable.style.tableLayout = '';
+  }
 
   tableHeaderRow.innerHTML = '';
   headers.forEach((h) => {
@@ -146,7 +177,11 @@ function renderTable(data) {
     else if (h === 'musicName') th.textContent = '楽曲';
     else th.textContent = h;
 
-    th.style.cursor = 'pointer';
+    if (columnWidths[h]) {
+      th.style.width = columnWidths[h] + 'px';
+      th.style.minWidth = columnWidths[h] + 'px';
+    }
+
     th.addEventListener('click', () => {
       if (sortColumn === h) {
         sortAsc = !sortAsc;
@@ -156,6 +191,48 @@ function renderTable(data) {
       }
       renderTable(data);
     });
+
+    // Resize handle
+    const handle = document.createElement('div');
+    handle.className = 'resize-handle';
+    handle.addEventListener('mousedown', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+
+      // Switch to fixed layout and snapshot all column widths
+      if (resultsTable.style.tableLayout !== 'fixed') {
+        const allThs = tableHeaderRow.querySelectorAll('th');
+        allThs.forEach((t) => {
+          const w = t.offsetWidth;
+          t.style.width = w + 'px';
+          t.style.minWidth = w + 'px';
+        });
+        resultsTable.style.tableLayout = 'fixed';
+      }
+
+      const startX = e.clientX;
+      const startWidth = th.offsetWidth;
+
+      const onMove = (ev) => {
+        const newWidth = Math.max(40, startWidth + (ev.clientX - startX));
+        th.style.width = newWidth + 'px';
+        th.style.minWidth = newWidth + 'px';
+      };
+
+      const onUp = () => {
+        columnWidths[h] = parseInt(th.style.width) || th.offsetWidth;
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+      };
+
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none';
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+    th.appendChild(handle);
 
     if (sortColumn === h) {
       th.classList.add(sortAsc ? 'sort-asc' : 'sort-desc');
@@ -196,13 +273,11 @@ function renderTable(data) {
 
 // --- Settings menu ---
 
-// Toggle menu
 settingsBtn.addEventListener('click', (e) => {
   e.stopPropagation();
   settingsMenu.classList.toggle('hidden');
 });
 
-// Close menu when clicking outside
 document.addEventListener('click', () => {
   settingsMenu.classList.add('hidden');
 });
@@ -211,68 +286,35 @@ settingsMenu.addEventListener('click', (e) => {
   e.stopPropagation();
 });
 
-// Font size mapping
-const fontSizes = { S: '12px', M: '13px', L: '14px' };
-
-// Apply settings to UI
 function applySettings(s) {
-  // Default source and mode
-  if (s.defaultSource && s.defaultMode) {
-    modeSelect.value = `${s.defaultSource}|${s.defaultMode}`;
+  if (s.defaultSource) {
+    sourceSelect.value = s.defaultSource;
     updateMirrorVisibility();
   }
-
-  // Default mirror
+  if (s.defaultMode) {
+    directionSelect.value = s.defaultMode;
+  }
   if (s.defaultMirror !== undefined) {
     mirrorCheck.checked = s.defaultMirror;
   }
 
-  // Font size
-  if (s.fontSize && fontSizes[s.fontSize]) {
-    document.body.style.fontSize = fontSizes[s.fontSize];
-    settingsFontSize.value = s.fontSize;
-  }
-
-  // Window size
-  if (s.windowSize) {
-    settingsWindowSize.value = s.windowSize;
-  }
-
-  // Reflect current settings in menu controls
-  const { source, mode } = getCurrentMode();
-  settingsSource.value = source;
-  settingsMode.value = mode;
+  settingsSource.value = getCurrentSource();
+  settingsMode.value = getCurrentMode();
   settingsMirror.checked = mirrorCheck.checked;
 }
 
-// Save settings when menu controls change
 function onSettingChange() {
   window.api.saveSettings({
     defaultSource: settingsSource.value,
     defaultMode: settingsMode.value,
     defaultMirror: settingsMirror.checked,
-    fontSize: settingsFontSize.value,
-    windowSize: settingsWindowSize.value,
-  });
-  applySettings({
-    defaultSource: settingsSource.value,
-    defaultMode: settingsMode.value,
-    defaultMirror: settingsMirror.checked,
-    fontSize: settingsFontSize.value,
-    windowSize: settingsWindowSize.value,
   });
 }
 
 settingsSource.addEventListener('change', onSettingChange);
 settingsMode.addEventListener('change', onSettingChange);
 settingsMirror.addEventListener('change', onSettingChange);
-settingsFontSize.addEventListener('change', onSettingChange);
-settingsWindowSize.addEventListener('change', () => {
-  onSettingChange();
-  // Window size setting takes effect on next launch (main.js reads settings on startup)
-});
 
-// Clear cache
 clearCacheBtn.addEventListener('click', async () => {
   await window.api.clearCache();
   updateClearCacheLabel();
@@ -288,7 +330,6 @@ async function updateClearCacheLabel() {
   }
 }
 
-// Load and apply settings on startup
 window.api.getSettings().then((s) => {
   applySettings(s || {});
   updateClearCacheLabel();

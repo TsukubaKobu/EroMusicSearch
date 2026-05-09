@@ -5,6 +5,7 @@ contextBridge.exposeInMainWorld('api', {
   getCache: () => ipcRenderer.invoke('get-cache'),
   setCache: (key, results) => ipcRenderer.invoke('set-cache', { key, results }),
   clearCache: () => ipcRenderer.invoke('clear-cache'),
+  saveCache: (cache) => ipcRenderer.invoke('save-cache', cache),
   getSettings: () => ipcRenderer.invoke('get-settings'),
   saveSettings: (settings) => ipcRenderer.invoke('save-settings', settings),
 });

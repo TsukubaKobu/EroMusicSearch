@@ -112,6 +112,11 @@ ipcMain.handle('clear-cache', async () => {
   return Object.keys(cache).length;
 });
 
+ipcMain.handle('save-cache', async (event, newCache) => {
+  cache = newCache;
+  saveCache(cache);
+});
+
 function loadSettings() {
   try {
     if (fs.existsSync(settingsPath)) {
