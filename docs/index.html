@@ -1,322 +1,357 @@
 <!doctype html>
 <html lang="ja" data-version="1.6.0">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EroMusicSearch — ACG Music Search</title>
-  <meta name="description" content="Bidirectional anime and game music search across ErogameScape, Bangumi, and Anison.info" />
+  <meta name="description"
+    content="Bidirectional anime and game music search across ErogameScape, Bangumi, and Anison.info" />
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
 
-<nav>
-  <div class="nav-inner">
-    <span class="nav-logo">EroMusicSearch</span>
-    <div class="lang-switch">
-      <button class="lang-btn active" onclick="setLang('ja')">JA</button>
-      <button class="lang-btn" onclick="setLang('zh')">ZH</button>
-      <button class="lang-btn" onclick="setLang('en')">EN</button>
-    </div>
-  </div>
-</nav>
-
-<!-- Hero -->
-<section class="hero">
-  <h1>
-    <span data-lang="ja" class="active">ACG 音楽を、双方向に</span>
-    <span data-lang="zh">ACG 音乐，双向检索</span>
-    <span data-lang="en">ACG Music, Searched Both Ways</span>
-  </h1>
-  <p class="hero-desc">
-    <span data-lang="ja" class="active">ゲーム・アニメの楽曲を 3 つのデータベースから横断検索。曲名から作品を、作品名から全曲を。</span>
-    <span data-lang="zh">跨三大数据库检索游戏与动漫音乐。从曲名查作品，从作品查全曲。</span>
-    <span data-lang="en">Cross-search game and anime music across 3 databases. Song &rarr; Work or Work &rarr; Songs.</span>
-  </p>
-  <div class="badges">
-    <img alt="CI" src="https://github.com/TsukubaKobu/EroMusicSearch/actions/workflows/ci.yml/badge.svg" />
-    <img alt="Version" class="js-version-badge" src="https://img.shields.io/badge/version-1.6.0-333" />
-    <img alt="License" src="https://img.shields.io/badge/license-MIT-333" />
-    <img alt="Platform" src="https://img.shields.io/badge/platform-macOS%20%7C%20Windows-333" />
-  </div>
-  <div class="hero-actions">
-    <a class="btn btn-primary" href="https://github.com/TsukubaKobu/EroMusicSearch/releases/latest">
-      <span data-lang="ja" class="active">ダウンロード</span>
-      <span data-lang="zh">下载</span>
-      <span data-lang="en">Download</span>
-    </a>
-    <a class="btn" href="https://github.com/TsukubaKobu/EroMusicSearch">GitHub</a>
-  </div>
-  <p class="hero-platform">macOS (ARM/Intel) &amp; Windows &middot; <span class="js-version-text">v1.6.0</span></p>
-</section>
-
-<!-- Mock Window -->
-<section class="mock-section reveal">
-  <div class="window">
-    <div class="window-bar">
-      <div class="window-dot"></div>
-      <div class="window-dot"></div>
-      <div class="window-dot"></div>
-    </div>
-    <div class="window-body">
-      <div class="mock-bar">
-        <select class="mock-select"><option>Anison.info</option></select>
-        <button class="mock-direction">
-          <span data-lang="ja" class="active">作品→曲</span>
-          <span data-lang="zh">作品→曲</span>
-          <span data-lang="en">Work→Song</span>
-        </button>
-        <input class="mock-input" type="text" value="進撃の巨人" readonly />
+  <nav>
+    <div class="nav-inner">
+      <span class="nav-logo">EroMusicSearch</span>
+      <div class="lang-switch">
+        <button class="lang-btn active" onclick="setLang('ja')">JA</button>
+        <button class="lang-btn" onclick="setLang('zh')">ZH</button>
+        <button class="lang-btn" onclick="setLang('en')">EN</button>
       </div>
-      <table class="mock-table">
-        <thead>
-          <tr>
-            <th><span data-lang="ja" class="active">楽曲</span><span data-lang="zh">乐曲</span><span data-lang="en">Song</span></th>
-            <th><span data-lang="ja" class="active">分類</span><span data-lang="zh">分类</span><span data-lang="en">Type</span></th>
-            <th><span data-lang="ja" class="active">作品</span><span data-lang="zh">作品</span><span data-lang="en">Work</span></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>紅蓮の弓矢</td><td style="color: var(--muted); font-size: 11px">OP 1</td><td>進撃の巨人</td></tr>
-          <tr><td>自由の翼</td><td style="color: var(--muted); font-size: 11px">OP 2</td><td>進撃の巨人</td></tr>
-          <tr><td>心臓を捧げよ!</td><td style="color: var(--muted); font-size: 11px">OP 3</td><td>進撃の巨人</td></tr>
-          <tr><td>Red Swan</td><td style="color: var(--muted); font-size: 11px">OP 4</td><td>進撃の巨人</td></tr>
-          <tr><td>美しき残酷な世界</td><td style="color: var(--muted); font-size: 11px">ED 1</td><td>進撃の巨人</td></tr>
-        </tbody>
-      </table>
     </div>
-  </div>
-</section>
+  </nav>
 
-<!-- Data Sources -->
-<section class="section">
-  <div class="section-header reveal">
-    <p class="section-label">
-      <span data-lang="ja" class="active">データソース</span>
-      <span data-lang="zh">数据源</span>
-      <span data-lang="en">Data Sources</span>
+  <!-- Hero -->
+  <section class="hero">
+    <h1>
+      <span data-lang="ja" class="active">アニソン・ゲーソン、双方向に</span>
+      <span data-lang="zh">ACG 音乐，双向检索</span>
+      <span data-lang="en">ACG Music, Searched Both Ways</span>
+    </h1>
+    <p class="hero-desc">
+      <span data-lang="ja" class="active">ゲーム・アニメの楽曲を 3 つのデータベースから横断検索。曲名から作品を、作品名から全曲を。</span>
+      <span data-lang="zh">跨三大数据库检索游戏与动漫音乐。从曲名查作品，从作品查全曲。</span>
+      <span data-lang="en">Cross-search game and anime music across 3 databases. Song &rarr; Work or Work &rarr;
+        Songs.</span>
     </p>
-    <h2 class="section-title">
-      <span data-lang="ja" class="active">3 つのデータベースに対応</span>
-      <span data-lang="zh">三大数据库</span>
-      <span data-lang="en">3 Data Sources</span>
-    </h2>
-    <p class="section-desc">
-      <span data-lang="ja" class="active">ギャルゲー・アニメ・アニソン専門のデータベースを一つのアプリで。</span>
-      <span data-lang="zh">黄油、动漫、动画歌曲数据库，一个应用全覆盖。</span>
-      <span data-lang="en">Galgame, anime, and anisong databases — all in one app.</span>
-    </p>
-  </div>
-  <div class="sources-grid">
-    <div class="source-card reveal">
-      <h3>ErogameScape <span style="color: var(--muted); font-weight: 400">批評空間</span></h3>
-      <span class="source-tag">
-        <span data-lang="ja" class="active">ギャルゲー</span>
-        <span data-lang="zh">黄油游戏</span>
-        <span data-lang="en">Galgame</span>
-      </span>
-      <p>
-        <span data-lang="ja" class="active">ギャルゲー・エロゲー音楽情報の日本最大級データベース。SQL + HTML スクレイピングで高精度検索。</span>
-        <span data-lang="zh">日本最大的美少女游戏音乐数据库。SQL + HTML 抓取，高精度检索。</span>
-        <span data-lang="en">Japan's largest galgame music database with SQL + HTML scraping for precise search.</span>
-      </p>
+    <div class="badges">
+      <img alt="CI" src="https://github.com/TsukubaKobu/EroMusicSearch/actions/workflows/ci.yml/badge.svg" />
+      <img alt="Version" class="js-version-badge" src="https://img.shields.io/badge/version-1.6.0-333" />
+      <img alt="License" src="https://img.shields.io/badge/license-MIT-333" />
+      <img alt="Platform" src="https://img.shields.io/badge/platform-macOS%20%7C%20Windows-333" />
     </div>
-    <div class="source-card reveal">
-      <h3>Bangumi <span style="color: var(--muted); font-weight: 400">番組計画</span></h3>
-      <span class="source-tag">
-        <span data-lang="ja" class="active">アニメ・ゲーム</span>
-        <span data-lang="zh">动漫·游戏</span>
-        <span data-lang="en">Anime / Games</span>
-      </span>
-      <p>
-        <span data-lang="ja" class="active">REST API 経由で日本語タイトルに完全対応。アニメ・ゲームの関連楽曲を双方向で検索。</span>
-        <span data-lang="zh">通过 REST API 完整支持日文标题，双向检索动漫和游戏关联曲目。</span>
-        <span data-lang="en">Full Japanese title support via REST API. Bidirectional search for anime and game soundtracks.</span>
-      </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://github.com/TsukubaKobu/EroMusicSearch/releases/latest">
+        <span data-lang="ja" class="active">ダウンロード</span>
+        <span data-lang="zh">下载</span>
+        <span data-lang="en">Download</span>
+      </a>
+      <a class="btn" href="https://github.com/TsukubaKobu/EroMusicSearch">GitHub</a>
     </div>
-    <div class="source-card reveal">
-      <h3>Anison.info</h3>
-      <span class="source-tag">
-        <span data-lang="ja" class="active">アニソン専門</span>
-        <span data-lang="zh">动画歌曲</span>
-        <span data-lang="en">Anisong</span>
-      </span>
-      <p>
-        <span data-lang="ja" class="active">OP/ED/IN/AR まで網羅したアニソン専門 DB。HTML スクレイピングで作品の全使用曲を一括取得。</span>
-        <span data-lang="zh">涵盖 OP/ED/IN/AR 的动画歌曲专属数据库。HTML 抓取一次性获取全部使用曲目。</span>
-        <span data-lang="en">Comprehensive anisong DB covering OP/ED/IN/AR. HTML scraping fetches all songs in one lookup.</span>
-      </p>
-    </div>
-  </div>
-</section>
+    <p class="hero-platform">macOS (ARM/Intel) &amp; Windows &middot; <span class="js-version-text">v1.6.0</span></p>
+  </section>
 
-<!-- Features -->
-<section class="section" style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); max-width: none; padding-left: 0; padding-right: 0;">
-  <div style="max-width: 960px; margin: 0 auto; padding: 100px 24px;">
+  <!-- Mock Window -->
+  <section class="mock-section reveal">
+    <div class="window">
+      <div class="window-bar">
+        <div class="window-dot"></div>
+        <div class="window-dot"></div>
+        <div class="window-dot"></div>
+      </div>
+      <div class="window-body">
+        <div class="mock-bar">
+          <select class="mock-select">
+            <option>Anison.info</option>
+          </select>
+          <button class="mock-direction">
+            <span data-lang="ja" class="active">作品→曲</span>
+            <span data-lang="zh">作品→曲</span>
+            <span data-lang="en">Work→Song</span>
+          </button>
+          <input class="mock-input" type="text" value="進撃の巨人" readonly />
+        </div>
+        <table class="mock-table">
+          <thead>
+            <tr>
+              <th><span data-lang="ja" class="active">楽曲</span><span data-lang="zh">乐曲</span><span
+                  data-lang="en">Song</span></th>
+              <th><span data-lang="ja" class="active">分類</span><span data-lang="zh">分类</span><span
+                  data-lang="en">Type</span></th>
+              <th><span data-lang="ja" class="active">作品</span><span data-lang="zh">作品</span><span
+                  data-lang="en">Work</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>紅蓮の弓矢</td>
+              <td style="color: var(--muted); font-size: 11px">OP 1</td>
+              <td>進撃の巨人</td>
+            </tr>
+            <tr>
+              <td>自由の翼</td>
+              <td style="color: var(--muted); font-size: 11px">OP 2</td>
+              <td>進撃の巨人</td>
+            </tr>
+            <tr>
+              <td>心臓を捧げよ!</td>
+              <td style="color: var(--muted); font-size: 11px">OP 3</td>
+              <td>進撃の巨人</td>
+            </tr>
+            <tr>
+              <td>Red Swan</td>
+              <td style="color: var(--muted); font-size: 11px">OP 4</td>
+              <td>進撃の巨人</td>
+            </tr>
+            <tr>
+              <td>美しき残酷な世界</td>
+              <td style="color: var(--muted); font-size: 11px">ED 1</td>
+              <td>進撃の巨人</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Data Sources -->
+  <section class="section">
     <div class="section-header reveal">
       <p class="section-label">
-        <span data-lang="ja" class="active">機能</span>
-        <span data-lang="zh">功能</span>
-        <span data-lang="en">Features</span>
+        <span data-lang="ja" class="active">データソース</span>
+        <span data-lang="zh">数据源</span>
+        <span data-lang="en">Data Sources</span>
       </p>
       <h2 class="section-title">
-        <span data-lang="ja" class="active">シンプルで強力</span>
-        <span data-lang="zh">简单而强大</span>
-        <span data-lang="en">Simple Yet Powerful</span>
+        <span data-lang="ja" class="active">3 つのデータベースに対応</span>
+        <span data-lang="zh">三大数据库</span>
+        <span data-lang="en">3 Data Sources</span>
       </h2>
+      <p class="section-desc">
+        <span data-lang="ja" class="active">ギャルゲー・アニメ・アニソン専門のデータベースを一つのアプリで。</span>
+        <span data-lang="zh">黄油、动漫、动画歌曲数据库，一个应用全覆盖。</span>
+        <span data-lang="en">Galgame, anime, and anisong databases — all in one app.</span>
+      </p>
     </div>
-    <div class="features-grid">
-      <div class="feature-card reveal">
-        <h3>
-          <span data-lang="ja" class="active">双方向検索</span>
-          <span data-lang="zh">双向检索</span>
-          <span data-lang="en">Bidirectional Search</span>
-        </h3>
+    <div class="sources-grid">
+      <div class="source-card reveal">
+        <h3>ErogameScape <span style="color: var(--muted); font-weight: 400">批評空間</span></h3>
+        <span class="source-tag">
+          <span data-lang="ja" class="active">ギャルゲー</span>
+          <span data-lang="zh">黄油游戏</span>
+          <span data-lang="en">Eroge</span>
+        </span>
         <p>
-          <span data-lang="ja" class="active">データソース選択 + 方向切替で 6 モード。「曲名→作品」と「作品→全楽曲」。</span>
-          <span data-lang="zh">数据源选择 + 方向切换，6 种模式。「曲名→作品」和「作品→全曲」。</span>
-          <span data-lang="en">6 modes via source selector + direction toggle. Song &rarr; Work &amp; Work &rarr; Songs.</span>
+          <span data-lang="ja" class="active">ギャルゲー・エロゲー音楽情報の日本最大級データベース。SQL + HTML スクレイピングで高精度検索。</span>
+          <span data-lang="zh">日本最大的美少女游戏音乐数据库。SQL + HTML 抓取，高精度检索。</span>
+          <span data-lang="en">Japan's largest eroge music database with SQL + HTML scraping for precise search.</span>
         </p>
       </div>
-      <div class="feature-card reveal">
-        <h3>
-          <span data-lang="ja" class="active">日本語ファジー検索</span>
-          <span data-lang="zh">日文模糊搜索</span>
-          <span data-lang="en">Japanese Fuzzy Search</span>
-        </h3>
+      <div class="source-card reveal">
+        <h3>Bangumi <span style="color: var(--muted); font-weight: 400">番組計画</span></h3>
+        <span class="source-tag">
+          <span data-lang="ja" class="active">アニメ・ゲーム</span>
+          <span data-lang="zh">动漫·游戏</span>
+          <span data-lang="en">Anime / Games</span>
+        </span>
         <p>
-          <span data-lang="ja" class="active">ひらがな ↔ カタカナ自動変換。どちらの表記でも正確にヒット。</span>
-          <span data-lang="zh">平假名与片假名自动互转，两种写法都能准确命中。</span>
-          <span data-lang="en">Hiragana &harr; Katakana auto-conversion. Accurate results with either notation.</span>
+          <span data-lang="ja" class="active">REST API 経由で日本語タイトルに完全対応。アニメ・ゲームの関連楽曲を双方向で検索。</span>
+          <span data-lang="zh">通过 REST API 完整支持日文标题，双向检索动漫和游戏关联曲目。</span>
+          <span data-lang="en">Full Japanese title support via REST API. Bidirectional search for anime and game
+            soundtracks.</span>
         </p>
       </div>
-      <div class="feature-card reveal">
-        <h3>
-          <span data-lang="ja" class="active">CN ミラー</span>
-          <span data-lang="zh">大陆镜像</span>
-          <span data-lang="en">CN Mirror</span>
-        </h3>
+      <div class="source-card reveal">
+        <h3>Anison.info</h3>
+        <span class="source-tag">
+          <span data-lang="ja" class="active">アニソン専門</span>
+          <span data-lang="zh">动画歌曲</span>
+          <span data-lang="en">Anisong</span>
+        </span>
         <p>
-          <span data-lang="ja" class="active">設定から有効化。EGS クエリを koko.kyara.top 経由に切替。</span>
-          <span data-lang="zh">从设置启用，EGS 查询切换至 koko.kyara.top 镜像。</span>
-          <span data-lang="en">Toggle in Settings. Routes EGS queries via koko.kyara.top mirror.</span>
-        </p>
-      </div>
-      <div class="feature-card reveal">
-        <h3>
-          <span data-lang="ja" class="active">検索キャッシュ</span>
-          <span data-lang="zh">搜索缓存</span>
-          <span data-lang="en">Search Cache</span>
-        </h3>
-        <p>
-          <span data-lang="ja" class="active">キャッシュファースト戦略。再検索時に即表示、バックグラウンドで最新化。オフライン対応。</span>
-          <span data-lang="zh">缓存优先策略。再次搜索即时显示，后台更新。完全支持离线使用。</span>
-          <span data-lang="en">Cache-first: instant display on re-search, background refresh. Offline-capable.</span>
-        </p>
-      </div>
-      <div class="feature-card reveal">
-        <h3>
-          <span data-lang="ja" class="active">テーブルソート &amp; リサイズ</span>
-          <span data-lang="zh">排序与列宽调整</span>
-          <span data-lang="en">Sort &amp; Resize</span>
-        </h3>
-        <p>
-          <span data-lang="ja" class="active">カラムヘッダークリックで日本語ソート。ヘッダー境界ドラッグで列幅を調整。</span>
-          <span data-lang="zh">点击列标题排序（支持日文），拖动边界调整列宽。</span>
-          <span data-lang="en">Click headers for Japanese-aware sort. Drag borders to resize columns.</span>
-        </p>
-      </div>
-      <div class="feature-card reveal">
-        <h3>
-          <span data-lang="ja" class="active">クリックコピー</span>
-          <span data-lang="zh">点击复制</span>
-          <span data-lang="en">Click to Copy</span>
-        </h3>
-        <p>
-          <span data-lang="ja" class="active">テーブルの任意のセルをクリックでクリップボードにコピー。</span>
-          <span data-lang="zh">点击任意单元格即可复制内容到剪贴板。</span>
-          <span data-lang="en">Click any table cell to copy to clipboard instantly.</span>
-        </p>
-      </div>
-      <div class="feature-card reveal">
-        <h3>
-          <span data-lang="ja" class="active">タイムアウト保護</span>
-          <span data-lang="zh">超时保护</span>
-          <span data-lang="en">Timeout Protection</span>
-        </h3>
-        <p>
-          <span data-lang="ja" class="active">外部 API 無応答時に 15 秒で自動切断。アプリのフリーズを防止。</span>
-          <span data-lang="zh">外部 API 15 秒无响应自动断开，防止应用卡死。</span>
-          <span data-lang="en">Auto-aborts requests after 15s, preventing app freeze on unresponsive APIs.</span>
-        </p>
-      </div>
-      <div class="feature-card reveal">
-        <h3>
-          <span data-lang="ja" class="active">設定メニュー</span>
-          <span data-lang="zh">设置菜单</span>
-          <span data-lang="en">Settings Menu</span>
-        </h3>
-        <p>
-          <span data-lang="ja" class="active">既定のデータソース・検索方向・CN ミラーを設定。ワンクリックでキャッシュ全削除。</span>
-          <span data-lang="zh">设置默认数据源、搜索方向、CN 镜像。一键清除全部缓存。</span>
-          <span data-lang="en">Set default source, direction, and CN mirror. One-click cache clearing.</span>
+          <span data-lang="ja" class="active">OP/ED/IN/AR まで網羅したアニソン専門 DB。HTML スクレイピングで作品の全使用曲を一括取得。</span>
+          <span data-lang="zh">涵盖 OP/ED/IN/AR 的动画歌曲专属数据库。HTML 抓取一次性获取全部使用曲目。</span>
+          <span data-lang="en">Comprehensive anisong DB covering OP/ED/IN/AR. HTML scraping fetches all songs in one
+            lookup.</span>
         </p>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Download -->
-<section class="download-section">
-  <div class="reveal">
-    <p class="section-label">
-      <span data-lang="ja" class="active">ダウンロード</span>
-      <span data-lang="zh">下载</span>
-      <span data-lang="en">Download</span>
-    </p>
-    <h2 class="section-title" style="margin-bottom: 8px">
-      <span data-lang="ja" class="active">今すぐ入手</span>
-      <span data-lang="zh">立即下载</span>
-      <span data-lang="en">Get It Now</span>
-    </h2>
-    <p style="color: var(--muted); font-size: 14px"><span class="js-version-text">v1.6.0</span> &middot; Free &amp; Open Source</p>
-    <div class="dl-cards">
-      <a class="dl-card js-dl-link" data-asset="EroMusicSearch-VERSION-arm64.dmg" href="#">
-        <div class="dl-emoji">🍎</div>
-        <div class="dl-platform">macOS ARM64</div>
-        <div class="dl-sub">Apple Silicon &middot; .dmg</div>
-      </a>
-      <a class="dl-card js-dl-link" data-asset="EroMusicSearch-VERSION.dmg" href="#">
-        <div class="dl-emoji">🍏</div>
-        <div class="dl-platform">macOS Intel</div>
-        <div class="dl-sub">x64 &middot; .dmg</div>
-      </a>
-      <a class="dl-card js-dl-link" data-asset="EroMusicSearch.Setup.VERSION.exe" href="#">
-        <div class="dl-emoji">🪟</div>
-        <div class="dl-platform">Windows</div>
-        <div class="dl-sub">x64 &middot; .exe</div>
+  <!-- Features -->
+  <section class="section"
+    style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); max-width: none; padding-left: 0; padding-right: 0;">
+    <div style="max-width: 960px; margin: 0 auto; padding: 100px 24px;">
+      <div class="section-header reveal">
+        <p class="section-label">
+          <span data-lang="ja" class="active">機能</span>
+          <span data-lang="zh">功能</span>
+          <span data-lang="en">Features</span>
+        </p>
+        <h2 class="section-title">
+          <span data-lang="ja" class="active">シンプルで強力</span>
+          <span data-lang="zh">简单而强大</span>
+          <span data-lang="en">Simple Yet Powerful</span>
+        </h2>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <h3>
+            <span data-lang="ja" class="active">双方向検索</span>
+            <span data-lang="zh">双向检索</span>
+            <span data-lang="en">Bidirectional Search</span>
+          </h3>
+          <p>
+            <span data-lang="ja" class="active">データソース選択 + 方向切替で 6 モード。「曲名→作品」と「作品→全楽曲」。</span>
+            <span data-lang="zh">数据源选择 + 方向切换，6 种模式。「曲名→作品」和「作品→全曲」。</span>
+            <span data-lang="en">6 modes via source selector + direction toggle. Song &rarr; Work &amp; Work &rarr;
+              Songs.</span>
+          </p>
+        </div>
+        <div class="feature-card reveal">
+          <h3>
+            <span data-lang="ja" class="active">日本語曖昧検索</span>
+            <span data-lang="zh">日文模糊搜索</span>
+            <span data-lang="en">Japanese Fuzzy Search</span>
+          </h3>
+          <p>
+            <span data-lang="ja" class="active">ひらがな ↔ カタカナ自動変換。どちらの表記でも正確にヒット。</span>
+            <span data-lang="zh">平假名与片假名自动互转，两种写法都能准确命中。</span>
+            <span data-lang="en">Hiragana &harr; Katakana auto-conversion. Accurate results with either notation.</span>
+          </p>
+        </div>
+        <div class="feature-card reveal">
+          <h3>
+            <span data-lang="ja" class="active">CN ミラー</span>
+            <span data-lang="zh">大陆镜像</span>
+            <span data-lang="en">CN Mirror</span>
+          </h3>
+          <p>
+            <span data-lang="ja" class="active">設定から有効化。EGS クエリを koko.kyara.top 経由に切替。</span>
+            <span data-lang="zh">从设置启用，EGS 查询切换至 koko.kyara.top 镜像。</span>
+            <span data-lang="en">Toggle in Settings. Routes EGS queries via koko.kyara.top mirror.</span>
+          </p>
+        </div>
+        <div class="feature-card reveal">
+          <h3>
+            <span data-lang="ja" class="active">検索キャッシュ</span>
+            <span data-lang="zh">搜索缓存</span>
+            <span data-lang="en">Search Cache</span>
+          </h3>
+          <p>
+            <span data-lang="ja" class="active">キャッシュファースト戦略。再検索時に即表示、バックグラウンドで最新化。オフライン対応。</span>
+            <span data-lang="zh">缓存优先策略。再次搜索即时显示，后台更新。完全支持离线使用。</span>
+            <span data-lang="en">Cache-first: instant display on re-search, background refresh. Offline-capable.</span>
+          </p>
+        </div>
+        <div class="feature-card reveal">
+          <h3>
+            <span data-lang="ja" class="active">テーブルソート &amp; リサイズ</span>
+            <span data-lang="zh">排序与列宽调整</span>
+            <span data-lang="en">Sort &amp; Resize</span>
+          </h3>
+          <p>
+            <span data-lang="ja" class="active">カラムヘッダークリックで日本語ソート。ヘッダー境界ドラッグで列幅を調整。</span>
+            <span data-lang="zh">点击列标题排序（支持日文），拖动边界调整列宽。</span>
+            <span data-lang="en">Click headers for Japanese-aware sort. Drag borders to resize columns.</span>
+          </p>
+        </div>
+        <div class="feature-card reveal">
+          <h3>
+            <span data-lang="ja" class="active">クリックコピー</span>
+            <span data-lang="zh">点击复制</span>
+            <span data-lang="en">Click to Copy</span>
+          </h3>
+          <p>
+            <span data-lang="ja" class="active">テーブルの任意のセルをクリックでクリップボードにコピー。</span>
+            <span data-lang="zh">点击任意单元格即可复制内容到剪贴板。</span>
+            <span data-lang="en">Click any table cell to copy to clipboard instantly.</span>
+          </p>
+        </div>
+        <div class="feature-card reveal">
+          <h3>
+            <span data-lang="ja" class="active">タイムアウト保護</span>
+            <span data-lang="zh">超时保护</span>
+            <span data-lang="en">Timeout Protection</span>
+          </h3>
+          <p>
+            <span data-lang="ja" class="active">外部 API 無応答時に 15 秒で自動切断。アプリのフリーズを防止。</span>
+            <span data-lang="zh">外部 API 15 秒无响应自动断开，防止应用卡死。</span>
+            <span data-lang="en">Auto-aborts requests after 15s, preventing app freeze on unresponsive APIs.</span>
+          </p>
+        </div>
+        <div class="feature-card reveal">
+          <h3>
+            <span data-lang="ja" class="active">設定メニュー</span>
+            <span data-lang="zh">设置菜单</span>
+            <span data-lang="en">Settings Menu</span>
+          </h3>
+          <p>
+            <span data-lang="ja" class="active">既定のデータソース・検索方向・CN ミラーを設定。ワンクリックでキャッシュ全削除。</span>
+            <span data-lang="zh">设置默认数据源、搜索方向、CN 镜像。一键清除全部缓存。</span>
+            <span data-lang="en">Set default source, direction, and CN mirror. One-click cache clearing.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download -->
+  <section class="download-section">
+    <div class="reveal">
+      <p class="section-label">
+        <span data-lang="ja" class="active">ダウンロード</span>
+        <span data-lang="zh">下载</span>
+        <span data-lang="en">Download</span>
+      </p>
+      <h2 class="section-title" style="margin-bottom: 8px">
+        <span data-lang="ja" class="active">今すぐ入手</span>
+        <span data-lang="zh">立即下载</span>
+        <span data-lang="en">Get It Now</span>
+      </h2>
+      <p style="color: var(--muted); font-size: 14px"><span class="js-version-text">v1.6.0</span> &middot; Free &amp;
+        Open Source</p>
+      <div class="dl-cards">
+        <a class="dl-card js-dl-link" data-asset="EroMusicSearch-VERSION-arm64.dmg" href="#">
+          <div class="dl-emoji">🍎</div>
+          <div class="dl-platform">macOS ARM64</div>
+          <div class="dl-sub">Apple Silicon &middot; .dmg</div>
+        </a>
+        <a class="dl-card js-dl-link" data-asset="EroMusicSearch-VERSION.dmg" href="#">
+          <div class="dl-emoji">🍏</div>
+          <div class="dl-platform">macOS Intel</div>
+          <div class="dl-sub">x64 &middot; .dmg</div>
+        </a>
+        <a class="dl-card js-dl-link" data-asset="EroMusicSearch.Setup.VERSION.exe" href="#">
+          <div class="dl-emoji">🪟</div>
+          <div class="dl-platform">Windows</div>
+          <div class="dl-sub">x64 &middot; .exe</div>
+        </a>
+      </div>
+      <p class="download-note">
+        <span data-lang="ja" class="active">macOS 初回起動時は右クリック → 開く で Gatekeeper を回避してください</span>
+        <span data-lang="zh">macOS 首次启动请右键 → 打开，绕过 Gatekeeper</span>
+        <span data-lang="en">macOS: Right-click &rarr; Open on first launch to bypass Gatekeeper</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="https://github.com/TsukubaKobu/EroMusicSearch">GitHub</a>
+      <a href="https://github.com/TsukubaKobu/EroMusicSearch/blob/main/CHANGELOG.md">
+        <span data-lang="ja" class="active">変更履歴</span>
+        <span data-lang="zh">更新日志</span>
+        <span data-lang="en">Changelog</span>
       </a>
     </div>
-    <p class="download-note">
-      <span data-lang="ja" class="active">macOS 初回起動時は右クリック → 開く で Gatekeeper を回避してください</span>
-      <span data-lang="zh">macOS 首次启动请右键 → 打开，绕过 Gatekeeper</span>
-      <span data-lang="en">macOS: Right-click &rarr; Open on first launch to bypass Gatekeeper</span>
-    </p>
-  </div>
-</section>
+    <p class="footer-attr">MIT &middot; Data from ErogameScape, Bangumi, Anison.info</p>
+  </footer>
 
-<!-- Footer -->
-<footer>
-  <div class="footer-links">
-    <a href="https://github.com/TsukubaKobu/EroMusicSearch">GitHub</a>
-    <a href="https://github.com/TsukubaKobu/EroMusicSearch/blob/main/CHANGELOG.md">
-      <span data-lang="ja" class="active">変更履歴</span>
-      <span data-lang="zh">更新日志</span>
-      <span data-lang="en">Changelog</span>
-    </a>
-  </div>
-  <p class="footer-attr">MIT &middot; Data from ErogameScape, Bangumi, Anison.info</p>
-</footer>
-
-<script src="main.js"></script>
+  <script src="main.js"></script>
 </body>
+
 </html>
