@@ -75,6 +75,15 @@ module.exports = [
     },
   },
   {
+    files: ['docs/**/*.js'],
+    languageOptions: {
+      globals: Object.assign({}, browserGlobals, {
+        IntersectionObserver: 'readonly',
+        localStorage: 'readonly',
+      }),
+    },
+  },
+  {
     files: ['eslint.config.js'],
     languageOptions: {
       ecmaVersion: 2022,
